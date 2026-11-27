@@ -1,0 +1,1314 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="dark">
+<meta name="theme-color" content="#0B0B0D">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="robots" content="noindex,nofollow">
+<title>Spartan Sprint · Nevegal 2027</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230B0B0D'/%3E%3Cpath d='M16 5l9 5v6c0 6-4 9-9 11-5-2-9-5-9-11v-6z' fill='%23D9232E'/%3E%3C/svg%3E">
+<style>
+:root{
+  --bg:#0B0B0D; --card:#141418; --bd:#24242B; --tile:#0F0F13; --tilebd:#2A2A32;
+  --tx:#F3F4F6; --tx2:#9CA3AF; --red:#D9232E; --red-t:#F2575F; --amber:#D97706;
+  --font:-apple-system,BlinkMacSystemFont,"SF Pro Text","Helvetica Neue",Arial,sans-serif;
+  --disp:-apple-system,BlinkMacSystemFont,"SF Pro Display","Helvetica Neue","Arial Narrow",Arial,sans-serif;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%;background:var(--bg)}
+body{margin:0;background:var(--bg);color:var(--tx);font:15px/1.4 var(--font);
+  padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+  touch-action:manipulation;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+body.lock{overflow:hidden}
+button,select{font:inherit;color:inherit;touch-action:manipulation}
+button{cursor:pointer;border:0;background:none;padding:0}
+:focus-visible{outline:2px solid var(--red-t);outline-offset:2px}
+b,strong{font-weight:700}
+h1,h2,h3,h4,p,ul{margin:0}
+.wrap{max-width:560px;margin:0 auto;padding:0 14px 48px}
+.dim{color:var(--tx2)}
+.mini{font:800 11px/1.2 var(--font);letter-spacing:.09em;color:var(--tx2);text-transform:uppercase}
+[hidden]{display:none!important}
+.sr,.pill,.chip,.badge,.row-amt,.tot b,.bigk b,.mod-k b,.meal b,.stats b,.num,.wd b{font-variant-numeric:tabular-nums}
+
+/* ---- header ---- */
+.top{padding:14px 0 10px;display:flex;flex-direction:column;gap:10px}
+.top-r{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.date{font:600 15px/1.25 var(--font);min-width:0}
+.date .dow{font-weight:800;text-transform:uppercase;letter-spacing:-.01em}
+.tag{font:800 10px/1 var(--font);letter-spacing:.08em;font-style:normal;color:var(--tx2);border:1px solid var(--tilebd);border-radius:5px;padding:3px 5px;margin-left:4px;white-space:nowrap;vertical-align:1px}
+.tag.now{background:var(--red);border-color:var(--red);color:#fff}
+.info{flex:0 0 auto;min-height:44px;padding:0 12px;border:1px solid var(--bd);border-radius:10px;color:var(--tx2);font:600 13px/1 var(--font)}
+.pills{display:flex;flex-wrap:wrap;gap:6px}
+.pill{font:800 11px/1 var(--font);letter-spacing:.05em;padding:7px 10px;border-radius:999px;border:1px solid var(--tilebd);color:var(--tx);white-space:nowrap}
+.pill.red{background:var(--red);border-color:var(--red);color:#fff}
+.pill.amber{border-color:var(--amber);color:var(--amber)}
+.nav{display:grid;grid-template-columns:auto auto auto 1fr;gap:6px}
+.nbtn{min-height:44px;padding:0 12px;border:1px solid var(--bd);border-radius:10px;background:var(--card);font:700 14px/1 var(--font)}
+.nbtn:disabled{opacity:.35}
+.nbtn.today{border-color:var(--red);color:#fff}
+.nav select{min-height:44px;min-width:0;width:100%;font-size:16px;font-weight:600;background:var(--card);border:1px solid var(--bd);border-radius:10px;padding:0 28px 0 10px;color:var(--tx);
+  -webkit-appearance:none;appearance:none;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%239CA3AF' stroke-width='2'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;background-position:right 10px center}
+.strip{display:grid;grid-template-columns:repeat(7,1fr);gap:5px}
+.wd{min-height:48px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;border:1px solid var(--bd);border-radius:10px;background:var(--card);position:relative}
+.wd span{font:700 11px/1 var(--font);color:var(--tx2)}
+.wd b{font:700 15px/1 var(--font)}
+.wd.on{background:var(--red);border-color:var(--red)}
+.wd.on span{color:#fff}
+.wd.today:not(.on)::after{content:"";position:absolute;top:5px;right:5px;width:6px;height:6px;border-radius:50%;background:var(--red)}
+
+/* ---- tab ---- */
+.tabs{position:sticky;top:env(safe-area-inset-top);z-index:5;display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:8px 0;background:var(--bg)}
+.tabs button{min-height:52px;border-radius:12px;border:1px solid var(--bd);background:var(--card);font:800 15px/1 var(--font);letter-spacing:.07em;color:var(--tx2)}
+.tabs button.on{background:var(--red);border-color:var(--red);color:#fff}
+#content{display:flex;flex-direction:column;gap:14px;padding-top:6px}
+
+/* ---- hero ---- */
+.hero{display:flex;flex-direction:column;gap:8px;padding:6px 2px 2px}
+.eyebrow{font:800 12px/1.2 var(--font);letter-spacing:.12em;color:var(--red-t)}
+.hero h1{font:800 38px/.98 var(--disp);letter-spacing:-.025em;text-transform:uppercase;overflow-wrap:anywhere}
+.sub{color:var(--tx2);font-size:14px}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:2px}
+.chip{font:700 12px/1 var(--font);padding:7px 10px;border:1px solid var(--tilebd);border-radius:8px;white-space:nowrap}
+.chip.rir{border-color:var(--red);color:var(--tx);padding:5px 8px;font-size:11px}
+
+/* ---- banner ---- */
+.banner{display:flex;flex-direction:column;gap:3px;padding:12px 14px;border-radius:12px;border:1px solid}
+.banner b{font:800 14px/1.2 var(--font);letter-spacing:.09em}
+.banner span{font-size:13px;color:var(--tx)}
+.banner.amber{border-color:var(--amber);background:rgba(217,119,6,.13)}
+.banner.amber b{color:var(--amber)}
+.banner.red{border-color:var(--red);background:rgba(217,35,46,.14)}
+.banner.red b{color:var(--red-t)}
+
+/* ---- sezioni e card ---- */
+.sec{display:flex;flex-direction:column;gap:8px}
+.sec-h{display:flex;align-items:baseline;justify-content:space-between;gap:10px;padding:6px 2px 0}
+.sec-h h2{font:800 13px/1.2 var(--font);letter-spacing:.13em;text-transform:uppercase}
+.sec-h span{font:600 12px/1.2 var(--font);color:var(--tx2);text-align:right}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:14px}
+.card.pad{padding:14px}
+.card.pad p+p,.card.pad p+ul,.card.pad ul+p{margin-top:8px}
+.acc-b p+p{margin-top:2px}
+.card.warn{border-color:var(--amber);background:rgba(217,119,6,.1);font-size:14px}
+.card.list{padding:2px 12px}
+.foot{font-size:12px;line-height:1.45;color:var(--tx2);padding:2px 2px 0}
+.foot.tight{padding-top:4px}
+.btn{min-height:48px;border-radius:12px;border:1px solid var(--red);background:var(--red);color:#fff;font:800 14px/1 var(--font);letter-spacing:.06em}
+.btn.wide{width:100%}
+.bul{list-style:none;padding:0;display:flex;flex-direction:column;gap:7px;font-size:14px}
+.bul li{padding-left:14px;position:relative}
+.bul li::before{content:"";position:absolute;left:0;top:.6em;width:5px;height:5px;border-radius:50%;background:var(--red)}
+.bul.tips b{display:inline}
+
+/* ---- disegni ---- */
+.tile{flex:0 0 72px;width:72px;height:72px;display:grid;place-items:center;background:var(--tile);border:1px solid var(--tilebd);border-radius:12px;position:relative}
+.tile::after{content:"";position:absolute;right:5px;bottom:5px;width:6px;height:6px;border-right:1.5px solid #5B6270;border-bottom:1.5px solid #5B6270}
+.tile.sm{flex-basis:56px;width:56px;height:56px;border-radius:10px}
+.tile svg{display:block;max-width:100%;max-height:100%}
+
+/* ---- esercizio ---- */
+.ex{display:flex;gap:12px;padding:12px;background:var(--card);border:1px solid var(--bd);border-radius:14px;align-items:flex-start}
+.ex.pre{background:transparent;border-style:dashed}
+.ex-b{min-width:0;flex:1;display:flex;flex-direction:column;gap:7px}
+.ex-t{display:flex;gap:8px;align-items:flex-start}
+.ex-t h3{font:700 16px/1.25 var(--font);min-width:0;overflow-wrap:anywhere}
+.num{flex:0 0 22px;height:22px;border-radius:50%;background:var(--red);color:#fff;font:800 12px/22px var(--font);text-align:center;margin-top:1px}
+.num.warm{background:transparent;border:1.5px dashed var(--red);color:var(--red-t);line-height:19px}
+.ex-sr{display:flex;flex-wrap:wrap;align-items:center;gap:4px 10px}
+.sr{font:800 22px/1 var(--disp);letter-spacing:-.01em}
+.per,.rest{font-size:12px;color:var(--tx2)}
+.load{display:flex;flex-wrap:wrap;align-items:center;gap:6px 8px}
+.bars{display:inline-flex;gap:3px}
+.bars i{width:15px;height:8px;border-radius:2px;background:#2A2A32;display:block}
+.bars i.on{background:var(--red)}
+.bars i.on.warm{background:transparent;border:1.5px dashed var(--red)}
+.bars.pace i{width:18px}
+.bars.none{color:var(--tx2);font-size:12px}
+.badge{font:800 11px/1 var(--font);letter-spacing:.06em;padding:4px 7px;border:1px solid var(--tilebd);border-radius:6px;white-space:nowrap}
+.badge.free{border-style:dashed;color:var(--tx2)}
+.was{font:700 11px/1.2 var(--font);color:var(--amber)}
+.was.block{font-weight:600;font-size:12px;margin-top:2px}
+.note{font-size:13px;line-height:1.4;color:var(--tx2)}
+
+/* ---- riga riscaldamento/defaticamento ---- */
+.row{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--bd)}
+.row:last-child{border-bottom:0}
+.row-b{flex:1;min-width:0}
+.row-n{font:600 14px/1.25 var(--font);overflow-wrap:anywhere}
+.row-note{font-size:12px;color:var(--tx2);margin-top:2px}
+.row-amt{flex:0 0 auto;max-width:92px;text-align:right;font:700 15px/1.15 var(--disp)}
+
+/* ---- corsa ---- */
+.run{display:flex;gap:12px;padding:12px;align-items:flex-start}
+.run-text{font:700 19px/1.25 var(--disp);overflow-wrap:anywhere}
+.run-meta{display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px}
+.tot{font-size:12px;color:var(--tx2)}
+.tot b{font:800 22px/1 var(--disp);color:var(--tx)}
+.paces{display:flex;flex-direction:column;gap:12px}
+.pace-row{display:grid;grid-template-columns:auto 86px 1fr;gap:10px;align-items:center;font-size:13px;color:var(--tx2);opacity:.75}
+.pace-row b{font:800 12px/1 var(--font);letter-spacing:.07em;color:var(--tx)}
+.pace-row.cur{opacity:1}
+.pace-row.cur b{color:var(--red-t)}
+.rest-top{display:flex;gap:12px;align-items:flex-start}
+.nextup p{margin-top:6px;font-size:14px}
+.racenote p{margin-top:6px;font-size:14px}
+
+/* ---- gara ---- */
+.stats{display:flex;gap:18px;flex-wrap:wrap;padding:4px 0}
+.stats div{display:flex;flex-direction:column;gap:5px;padding-left:12px;border-left:2px solid var(--bd)}
+.stats b{font:800 32px/1 var(--disp)}
+.stats span{font:700 11px/1.2 var(--font);letter-spacing:.09em;color:var(--tx2)}
+.obst{display:flex;flex-direction:column;gap:3px;padding:10px 0;border-bottom:1px solid var(--bd);font-size:13px}
+.obst:first-child{padding-top:0}.obst:last-child{border-bottom:0;padding-bottom:0}
+.obst b{font-size:14px}
+.obst em{font-style:normal;font-weight:700;color:var(--red-t)}
+.rw{display:flex;gap:10px;padding:8px 0;border-bottom:1px solid var(--bd);font-size:13px}
+.rw:last-child{border-bottom:0}
+.rw b{flex:0 0 66px;font:800 11px/1.5 var(--font);letter-spacing:.08em;color:var(--red-t)}
+
+/* ---- dieta ---- */
+.hero.diet .bigk{display:flex;align-items:baseline;gap:8px;margin-top:2px}
+.bigk b{font:800 54px/1 var(--disp);letter-spacing:-.03em}
+.bigk span{font:700 14px/1 var(--font);color:var(--tx2);letter-spacing:.06em}
+.macros{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:6px}
+.macros div{background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:10px 12px;display:flex;flex-direction:column;gap:4px}
+.macros span{font:800 10px/1 var(--font);letter-spacing:.1em;color:var(--tx2)}
+.macros b{font:700 14px/1.25 var(--font)}
+.meals{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.meal{padding:12px;display:flex;flex-direction:column;gap:5px}
+.meal b{font:800 28px/1 var(--disp)}
+.meal small{font:700 12px/1 var(--font);color:var(--tx2)}
+.meal .dim{font-size:12px}
+.timing{display:flex;flex-direction:column;gap:8px}
+.tv{display:flex;flex-direction:column;gap:9px}
+.tv.off{opacity:.6}
+.tv .bul{font-size:13px}
+.pr{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.pr .card{display:flex;flex-direction:column;gap:5px}
+.pr p{font-size:12px;color:var(--tx2)}
+.kk{font:800 18px/1 var(--disp)}
+.mod{display:flex;gap:10px;padding:12px 0;border-bottom:1px solid var(--bd)}
+.mod:last-child{border-bottom:0}
+.mod-id{flex:0 0 28px;font:800 13px/1.3 var(--font);color:var(--red-t)}
+.mod-b{flex:1;min-width:0;display:flex;flex-direction:column;gap:3px}
+.mod-b h4{font:700 15px/1.25 var(--font)}
+.mod-b p{font-size:12.5px;line-height:1.4}
+.mod-k{flex:0 0 74px;text-align:right;display:flex;flex-direction:column;gap:2px}
+.mod-k b{font:800 20px/1 var(--disp)}
+.mod-k span{font-size:11px;color:var(--tx2)}
+.mod-k small{font-size:10.5px;color:var(--tx2);opacity:.8}
+.accs{display:flex;flex-direction:column;gap:8px}
+.acc{background:var(--card);border:1px solid var(--bd);border-radius:14px;overflow:hidden}
+.acc summary{list-style:none;min-height:52px;display:flex;align-items:center;gap:8px;padding:6px 14px;cursor:pointer;font:700 15px/1.2 var(--font)}
+.acc summary::-webkit-details-marker{display:none}
+.acc summary span{flex:1;min-width:0}
+.acc summary em{font:500 12px/1.2 var(--font);font-style:normal;color:var(--tx2);text-align:right;max-width:46%}
+.acc summary::after{content:"";flex:0 0 8px;height:8px;border-right:2px solid var(--tx2);border-bottom:2px solid var(--tx2);transform:rotate(45deg);margin:-3px 4px 0 6px}
+.acc[open] summary::after{transform:rotate(-135deg);margin-top:3px}
+.acc-b{padding:2px 14px 14px;display:flex;flex-direction:column;gap:10px;font-size:13.5px}
+.acc-b .list{display:flex;flex-direction:column}
+.acc-b .card.int{background:var(--tile)}
+.int-h{display:flex;justify-content:space-between;align-items:baseline;gap:8px;margin-bottom:8px}
+.int-h b{font:800 17px/1.2 var(--disp);text-transform:uppercase}
+.week{display:flex;flex-direction:column;gap:6px}
+.wk{border:1px solid var(--bd);border-radius:10px;padding:9px 10px;background:var(--tile);display:flex;flex-direction:column;gap:6px}
+.wk.cur{border-color:var(--red)}
+.wk-h{display:flex;align-items:baseline;gap:8px}
+.wk-h b{font:800 12px/1 var(--font);letter-spacing:.07em;color:var(--red-t)}
+.wk-h span{flex:1;font-weight:600}
+.wk-h em{font:800 11px/1 var(--font);font-style:normal;padding:3px 6px;border:1px solid var(--tilebd);border-radius:5px}
+.wk.rest .wk-h span{color:var(--tx2)}
+.wk-m{display:grid;grid-template-columns:1fr 1fr;gap:3px 10px;font-size:12px;color:var(--tx2)}
+.wk-m i{font:800 11px/1 var(--font);font-style:normal;color:var(--tx);margin-right:5px}
+
+/* ---- modale Info & Legenda ---- */
+.sheet{position:fixed;top:0;right:0;bottom:0;left:0;z-index:20;background:rgba(0,0,0,.62)}
+.sheet-panel{position:absolute;left:0;right:0;bottom:0;top:calc(env(safe-area-inset-top) + 22px);max-width:600px;margin:0 auto;background:var(--bg);border:1px solid var(--bd);border-radius:18px 18px 0 0;display:flex;flex-direction:column;overflow:hidden}
+.sheet-h{display:flex;align-items:center;gap:8px;padding:10px 12px;border-bottom:1px solid var(--bd)}
+.seg{flex:1;display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.seg button{min-height:44px;border:1px solid var(--bd);border-radius:10px;background:var(--card);font:800 13px/1 var(--font);letter-spacing:.08em;text-transform:uppercase;color:var(--tx2)}
+.seg button.on{background:var(--red);border-color:var(--red);color:#fff}
+.sheet-close{flex:0 0 44px;height:44px;border:1px solid var(--bd);border-radius:10px;font-size:18px;color:var(--tx2)}
+.sheet-body{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;padding:14px 14px calc(28px + env(safe-area-inset-bottom))}
+.sheet-content{display:flex;flex-direction:column;gap:14px}
+.lv{display:flex;flex-direction:column;gap:12px;margin:12px 0}
+.lv-r{display:flex;gap:12px;align-items:flex-start}
+.lv-r .bars{flex:0 0 87px;margin-top:3px}
+.lv-r .bars.none{margin-top:0}
+.lv-r div{display:flex;flex-direction:column;gap:2px;min-width:0}
+.lv-r b{font:800 13px/1.2 var(--font);letter-spacing:.06em}
+.lv-r span{font-size:13px}
+.lv-r small{font-size:12px;color:var(--tx2)}
+.ph{display:flex;flex-direction:column;gap:3px;padding:10px 0;border-bottom:1px solid var(--bd)}
+.ph:first-child{padding-top:0}.ph:last-child{border-bottom:0;padding-bottom:0}
+.ph b{font:800 14px/1.2 var(--font);letter-spacing:.03em}
+.ph span{font:700 11px/1.35 var(--font);color:var(--red-t);letter-spacing:.04em}
+.ph small{font-size:12.5px;color:var(--tx2)}
+
+/* ---- overlay disegno ---- */
+.zoom{position:fixed;top:0;right:0;bottom:0;left:0;z-index:30;background:rgba(0,0,0,.86);display:flex;align-items:center;justify-content:center;padding:20px}
+.zoom-box{width:100%;max-width:400px;background:var(--card);border:1px solid var(--tilebd);border-radius:18px;padding:16px;display:flex;flex-direction:column;gap:14px}
+.zoom-title{font:700 16px/1.25 var(--font);text-align:center}
+.zoom-poses{display:flex;align-items:center;justify-content:center;gap:6px}
+.zoom-poses figure{margin:0;display:flex;flex-direction:column;align-items:center;gap:8px;background:var(--tile);border:1px solid var(--tilebd);border-radius:14px;padding:8px 6px 10px;flex:1;min-width:0}
+.zoom-poses svg{width:100%;height:auto;max-width:150px}
+.zoom-poses figcaption{font:800 10.5px/1 var(--font);letter-spacing:.1em;color:var(--tx2)}
+.zoom-next{font:300 30px/1 var(--font);color:var(--red-t)}
+.zoom-close{min-height:46px;border:1px solid var(--bd);border-radius:12px;font:800 13px/1 var(--font);letter-spacing:.08em;color:var(--tx2)}
+
+@media (max-width:360px){
+  .hero h1{font-size:32px}
+  .sr{font-size:20px}
+  .nbtn{padding:0 9px}
+}
+@media (prefers-reduced-motion:no-preference){
+  .tabs button,.nbtn,.wd,.btn{transition:background-color .12s,border-color .12s}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <div class="top-r">
+      <div id="h-date" class="date"></div>
+      <button type="button" class="info" data-act="sheet" data-sheet="legenda">Info &amp; Legenda</button>
+    </div>
+    <div id="h-pills" class="pills"></div>
+    <div class="nav">
+      <button type="button" id="h-prev" class="nbtn" data-act="prev" aria-label="Giorno precedente">‹ Prec</button>
+      <button type="button" class="nbtn today" data-act="today">Oggi</button>
+      <button type="button" id="h-next" class="nbtn" data-act="next" aria-label="Giorno successivo">Succ ›</button>
+      <select id="h-week" aria-label="Vai alla settimana"></select>
+    </div>
+    <div id="h-strip" class="strip"></div>
+  </header>
+  <nav id="tabs" class="tabs" role="tablist" aria-label="Sezioni">
+    <button type="button" role="tab" id="tab-train" data-tab="train">ALLENAMENTO</button>
+    <button type="button" role="tab" id="tab-diet" data-tab="diet">DIETA</button>
+  </nav>
+  <main id="content" role="tabpanel"></main>
+</div>
+
+<div id="sheet" class="sheet" hidden role="dialog" aria-modal="true" aria-label="Info e legenda">
+  <div class="sheet-panel">
+    <div class="sheet-h">
+      <div class="seg" role="tablist">
+        <button type="button" role="tab" data-sheet-tab="legenda">Legenda</button>
+        <button type="button" role="tab" data-sheet-tab="gara">Gara</button>
+      </div>
+      <button type="button" class="sheet-close" aria-label="Chiudi">✕</button>
+    </div>
+    <div class="sheet-body"><div class="sheet-content"></div></div>
+  </div>
+</div>
+
+<div id="zoom" class="zoom" hidden role="dialog" aria-modal="true" aria-label="Disegno dell'esercizio">
+  <div class="zoom-box">
+    <div class="zoom-title"></div>
+    <div class="zoom-poses"></div>
+    <button type="button" class="zoom-close">CHIUDI</button>
+  </div>
+</div>
+
+<script>
+/* =====================================================================
+   DIET_DATA  —  LINEE GUIDA ALIMENTARI (modifica qui la dieta)
+   ---------------------------------------------------------------------
+   • Tutti i testi sono semplici stringhe tra apici inversi `...`.
+   • Nei moduli, "kcal" e "prot" sono coppie [giorno di allenamento, giorno di riposo].
+   • Per cambiare un pasto: modifica "cosa" e le kcal del modulo (C=colazione,
+     M=merenda, P=pranzo, D=cena). Per cambiare la settimana tipo: sezione "settimana".
+   • Non serve toccare nient'altro: l'app legge tutto da questa costante.
+   ===================================================================== */
+const DIET_DATA = {
+
+  /* ---- Dati di partenza (pagina 7 del piano) ---- */
+  profilo: { eta: 22, altezza: `173 cm`, peso: `68 kg` },
+
+  /* ---- Numeri della giornata: allenamento (Lun Mar Gio Sab) e riposo (Mer Ven Dom) ---- */
+  giorni: {
+    allenamento: {
+      titolo: `Giorno di allenamento`, quando: `Lun · Mar · Gio · Sab`,
+      kcal: `≈ 2.550 kcal`, proteine: `≈ 140 g · 2,0 g/kg`, carboidrati: `≈ 335 g · 4,9 g/kg`,
+      grassi: `≈ 70 g`, acqua: `2-2,5 L + 0,5 L per ora di allenamento`,
+      note: `Più pasta, riso e patate quando ti alleni.`
+    },
+    riposo: {
+      titolo: `Giorno di riposo`, quando: `Mer · Ven · Dom`,
+      kcal: `≈ 2.150 kcal`, proteine: `≈ 130 g · 1,9 g/kg`, carboidrati: `≈ 265 g · 3,9 g/kg`,
+      grassi: `≈ 65 g`, acqua: `2-2,5 L`,
+      note: `Stesse scelte, porzioni di riposo (seconda cifra di ogni modulo). La camminata facoltativa non cambia il piano.`
+    }
+  },
+  noteNumeri: [
+    `Stima di partenza, da aggiustare con la bilancia.`,
+    `Proteine distribuite su tutti e 4 i pasti, 25-50 g ciascuno.`,
+    `Grassi buoni: olio extravergine, frutta secca, uova, pesce.`,
+    `Acqua: urina chiara. Di più se fa caldo.`
+  ],
+  comeCalcolati: `Metabolismo basale ≈ 1.650 kcal (formula Mifflin-St Jeor) × 1,55 nei giorni di allenamento e × 1,3 nei giorni di riposo. Media della settimana ≈ 2.400 kcal.`,
+  controllo: `Pesati ogni lunedì mattina a digiuno. Se in 3 settimane scendi di oltre 1 kg, aggiungi 200 kcal (un po' di pane o riso a pranzo). Se sali di oltre 1 kg, toglile.`,
+
+  /* ---- I 4 pasti: kcal [allenamento, riposo] ---- */
+  pasti: [
+    { id: `colazione`, nome: `Colazione`, kcal: [570, 490], moduli: `C1-C4`, nota: `Un modulo a scelta.` },
+    { id: `pranzo`,    nome: `Pranzo`,    kcal: [790, 660], moduli: `P1-P6`, nota: `Da portare e scaldare.` },
+    { id: `merenda`,   nome: `Merenda`,   kcal: [420, 330], moduli: `M1-M5`, nota: `Dopo l'allenamento.` },
+    { id: `cena`,      nome: `Cena`,      kcal: [780, 690], moduli: `D1-D5`, nota: `Cucinata fresca.` }
+  ],
+  regolaPasti: `Per ogni pasto scegli un solo modulo e cambia quando vuoi: i moduli di uno stesso pasto si equivalgono per calorie e proteine. Un pasto libero a settimana (una pizza, una cena fuori) al posto di una cena va bene: non serve recuperarlo.`,
+
+  /* ---- Timing: la merenda segue l'allenamento (entro 60 minuti dalla fine) ---- */
+  timing: {
+    titolo: `La merenda segue l'allenamento`, sotto: `Entro 60 minuti dalla fine`,
+    varianti: [
+      { id: `mattina`, titolo: `Mattina presto · 6-8`, righe: [
+        `<b>Prima</b> (30-45 min): il «pre» (circa 230 kcal), al posto della colazione.`,
+        `<b>Dopo:</b> merenda a scelta + il «rinforzo» (+290 kcal): è il resto della colazione, spostato dopo.`,
+        `<b>Pranzo e cena:</b> invariati.` ] },
+      { id: `sera`, titolo: `Sera · 18-20:30`, righe: [
+        `<b>Colazione e pranzo:</b> come da piano, senza rinforzo.`,
+        `<b>Prima</b> (1 ora): un frutto o una banana, facoltativo.`,
+        `<b>Dopo:</b> merenda a scelta, poi cena almeno 45 minuti più tardi. Se hai poca fame, dimezza il carboidrato della cena.` ] },
+      { id: `riposo`, titolo: `Riposo · Mer Ven Dom`, righe: [
+        `<b>Tutti i pasti</b> in porzione di riposo (seconda cifra di ogni modulo).`,
+        `<b>Merenda</b> nel pomeriggio, verso le 16-17: stessa scelta, meno carboidrati.`,
+        `<b>Camminata</b> facoltativa: non cambia il piano.` ] }
+    ],
+    pre:       { titolo: `PRE · 30-45 min prima`,   kcal: `230 kcal · 4 g`, cosa: `Banana 120 g · 2 fette biscottate (20 g) · miele 15 g. Leggero e veloce da digerire: sostituisce la colazione.` },
+    rinforzo:  { titolo: `RINFORZO · con la merenda`, kcal: `290 kcal · 7 g`, cosa: `Pane 60 g · marmellata 20 g · banana 100 g, da aggiungere alla merenda dopo l'allenamento. Solo nei giorni di allenamento.` }
+  },
+
+  /* ---- Idratazione ---- */
+  idratazione: {
+    allenamento: `2-2,5 L al giorno + 0,5 L per ogni ora di allenamento.`,
+    riposo: `2-2,5 L al giorno.`,
+    note: [`Urina chiara: è il segnale che stai bevendo abbastanza.`, `Di più se fa caldo.`]
+  },
+
+  /* ---- Moduli. kcal e prot: [allenamento, riposo]. Quantità "x / y" = allenamento / riposo ---- */
+  moduli: {
+    colazione: [
+      { id: `C1`, nome: `Avena e banana`, cosa: `Fiocchi d'avena 70 / 55 g · latte parzialmente scremato 250 ml · banana 120 / 100 g · burro d'arachidi 15 g`, kcal: [570, 500], prot: [22, 20] },
+      { id: `C2`, nome: `Uova e pane`, cosa: `Pane integrale 90 / 70 g · 2 uova strapazzate o all'occhio di bue · bresaola 20 g · marmellata 20 / 15 g · frutta di stagione 150 g`, kcal: [540, 475], prot: [30, 28] },
+      { id: `C3`, nome: `Yogurt e granola`, cosa: `Yogurt greco 250 g · granola 60 / 45 g · miele 10 g · frutta di stagione 150 g · noci 15 / 10 g`, kcal: [575, 485], prot: [34, 32] },
+      { id: `C4`, nome: `Pancake d'avena`, cosa: `Avena 65 / 50 g, 2 uova e banana 100 g frullati e cotti in padella antiaderente · miele 15 / 10 g · burro d'arachidi 10 g`, kcal: [595, 520], prot: [26, 24] }
+    ],
+    merenda: [
+      { id: `M1`, nome: `Shake di recupero`, cosa: `Proteine del siero 30 g (1 misurino raso) · latte 250 ml · banana 120 / 60 g · fiocchi d'avena 30 / 15 g, frullati insieme`, kcal: [450, 340], prot: [38, 35] },
+      { id: `M2`, nome: `Yogurt e granola`, cosa: `Yogurt greco 250 / 200 g · granola 50 / 30 g · miele 10 g · frutta di stagione 120 g`, kcal: [425, 320], prot: [31, 24] },
+      { id: `M3`, nome: `Panino e frutta`, cosa: `Pane integrale 80 / 50 g · bresaola 40 g · ricotta 40 / 30 g · frutta di stagione 150 g`, kcal: [395, 305], prot: [25, 22] },
+      { id: `M4`, nome: `Fiocchi di latte e gallette`, cosa: `Fiocchi di latte (cottage) 200 / 150 g · gallette di riso 35 / 20 g · miele 10 g · frutta di stagione 150 g`, kcal: [435, 330], prot: [26, 20] },
+      { id: `M5`, nome: `Uova e pane`, cosa: `2 uova sode (110 g) · pane integrale 60 / 40 g · frutta di stagione 150 g. Si prepara la sera prima e si porta via.`, kcal: [380, 330], prot: [21, 19] }
+    ],
+    pranzo: [
+      { id: `P1`, nome: `Pasta al ragù`, cosa: `Pasta integrale 140 / 105 g · macinato magro di manzo 100 g · passata 100 g · verdure miste 200 g · olio extravergine 12 / 10 g · parmigiano 10 g`, nota: `Il più facile: il ragù si congela in porzioni.`, kcal: [845, 705], prot: [48, 43] },
+      { id: `P2`, nome: `Riso e pollo`, cosa: `Riso basmati 140 / 100 g · petto di pollo a cubetti 120 g · peperoni e zucchine 200 g · olio extravergine 12 / 10 g · parmigiano 10 g`, nota: `Pollo e riso nello stesso contenitore: mescola a metà riscaldamento.`, kcal: [820, 660], prot: [46, 43] },
+      { id: `P3`, nome: `Pasta tonno e pomodorini`, cosa: `Pasta 140 / 105 g · tonno al naturale 80 g · pomodorini 150 g · olive 25 g · spinaci o zucchine 150 g · olio extravergine 12 / 10 g`, nota: `Buono anche tiepido, utile se il porta pranzo si scarica.`, kcal: [765, 625], prot: [42, 38] },
+      { id: `P4`, nome: `Farro e lenticchie`, cosa: `Farro 90 / 70 g · lenticchie secche 50 g · 1 uovo sodo (55 g) · carote, sedano e zucchine 200 g · olio extravergine 12 / 10 g · parmigiano 15 g`, nota: `Una zuppa densa: scalda benissimo. L'uovo sodo viaggia a parte.`, kcal: [760, 675], prot: [41, 38] },
+      { id: `P5`, nome: `Patate e tacchino`, cosa: `Patate 500 / 380 g · fesa di tacchino 120 g · broccoli o fagiolini 200 g · olio extravergine 15 / 12 g · parmigiano 15 g`, nota: `Patate a cubetti al forno, non intere: si scaldano in modo uniforme.`, kcal: [755, 640], prot: [48, 45] },
+      { id: `P6`, nome: `Riso e salmone`, cosa: `Riso 120 / 90 g · salmone 100 g · piselli 100 g · verdure 100 g · olio extravergine 5 g`, nota: `Salmone a pezzi sul riso: scalda poco, 2 minuti bastano. Da mangiare entro 2 giorni.`, kcal: [770, 665], prot: [37, 35] }
+    ],
+    cena: [
+      { id: `D1`, nome: `Salmone e patate`, cosa: `Salmone 120 g al forno o in padella · patate 400 / 300 g · verdure 250 g · olio extravergine 10 g · pane 40 / 20 g`, kcal: [800, 675], prot: [41, 37] },
+      { id: `D2`, nome: `Pollo e riso`, cosa: `Petto di pollo 130 g alla piastra · riso 100 / 75 g · verdure 250 g · olio extravergine 10 g · pane 30 g · frutta 150 g`, kcal: [795, 710], prot: [47, 45] },
+      { id: `D3`, nome: `Frittata e pane`, cosa: `Frittata di 3 uova (165 g) con parmigiano 10 g · pane integrale 130 / 110 g · verdure 250 g · olio extravergine 10 g · frutta 150 g`, kcal: [830, 780], prot: [42, 40] },
+      { id: `D4`, nome: `Manzo e patate`, cosa: `Manzo magro (fesa, controfiletto) 130 g · patate 350 / 250 g · verdure 250 g · olio extravergine 10 g · pane 60 / 40 g`, kcal: [755, 625], prot: [45, 41] },
+      { id: `D5`, nome: `Pasta con ceci e tonno`, cosa: `Pasta 100 / 80 g · ceci secchi 40 g (circa 100 g già cotti) · tonno al naturale 70 g · verdure 200 g · olio extravergine 10 g · parmigiano 10 g`, kcal: [735, 665], prot: [45, 42] }
+    ]
+  },
+  noteModuli: {
+    colazioneMerenda: [
+      `<b>Pesi a crudo o a secco</b> per pane, avena, granola e gallette. Frutta e verdura pulite, senza scarto.`,
+      `<b>Frutta di stagione:</b> mela, pera, arancia, kiwi, frutti di bosco. Cambia quando vuoi.`,
+      `<b>Senza proteine in polvere:</b> nello shake M1 sostituisci il misurino con 200 g di yogurt greco (circa 20 g di proteine invece di 24).`,
+      `<b>Al latte</b> puoi preferire la bevanda di soia non zuccherata: ha proteine simili.`
+    ],
+    pranzoCena: [
+      `<b>Pesi a crudo</b> per pasta, riso, farro, legumi secchi, carne, pesce e patate. Le verdure si pesano pulite.`,
+      `<b>Verdure libere:</b> zucchine, spinaci, broccoli, peperoni, carote, insalata. Cambia tipo ogni giorno.`,
+      `<b>Pranzo del weekend</b> a casa: usa un modulo P e cuocilo fresco, senza porta pranzo.`,
+      `<b>Pasto libero:</b> una cena a settimana al posto di un modulo D, senza compensare dopo.`
+    ],
+    stime: `Calorie e proteine sono stime da tabelle medie, con un margine di circa ±10%. Cambiare modulo da un giorno all'altro non altera il piano: conta la media della settimana.`
+  },
+
+  /* ---- Il pranzo da portare (meal prep) ---- */
+  mealPrep: {
+    sotto: `Meal prep in 2 sessioni`,
+    punti: [
+      `<b>Cuoci due volte.</b> Domenica per i pranzi di lunedì, martedì e mercoledì. Mercoledì sera per giovedì e venerdì. Tutto il resto, nel freezer.`,
+      `<b>Raffredda in fretta.</b> Dividi in contenitori bassi e metti in frigo entro 1-2 ore. Riso e pasta non restano fuori a lungo.`,
+      `<b>Frigo: massimo 3-4 giorni.</b> Il riso cotto entro 3 giorni.`,
+      `<b>In borsa.</b> Il pranzo esce dal frigo e viaggia in una borsa termica con un panetto di ghiaccio, fino a quando lo scaldi.`,
+      `<b>Scalda bene.</b> Nel porta pranzo a batteria finché è fumante e bollente al centro. Una volta sola: gli avanzi non si riscaldano di nuovo.`,
+      `<b>Condisci dopo.</b> Olio a crudo e parmigiano vanno aggiunti a pasto scaldato. Sughi, zuppe e patate a cubetti scaldano meglio.`
+    ],
+    sessioni: `Domenica cucini P1, P2 e P3 (lunedì, martedì, mercoledì); mercoledì sera cucini P4 e P5 (giovedì, venerdì). Il sabato e la domenica pranzi a casa. Lo shake M1 si può sostituire con M2-M5 quando vuoi.`
+  },
+
+  /* ---- Settimana tipo: indice 0 = Lunedì … 6 = Domenica. T = porzioni allenamento, R = riposo ---- */
+  settimana: [
+    { g: `LUN`, att: `Lower body`, tr: `T`, c: `C1`, p: `P1`, m: `M1`, d: `D1` },
+    { g: `MAR`, att: `Corsa`,      tr: `T`, c: `C3`, p: `P2`, m: `M2`, d: `D2` },
+    { g: `MER`, att: `Riposo`,     tr: `R`, c: `C2`, p: `P3`, m: `M5`, d: `D5` },
+    { g: `GIO`, att: `Upper body`, tr: `T`, c: `C4`, p: `P4`, m: `M3`, d: `D4` },
+    { g: `VEN`, att: `Riposo`,     tr: `R`, c: `C1`, p: `P5`, m: `M2`, d: `D3` },
+    { g: `SAB`, att: `Ostacoli`,   tr: `T`, c: `C2`, p: `P6`, m: `M1`, d: `D2` },
+    { g: `DOM`, att: `Riposo`,     tr: `R`, c: `C4`, p: `P4`, m: `M4`, d: `D1`, nota: `pranzo fresco` }
+  ],
+
+  /* ---- Lista della spesa (7 giorni, quantità arrotondate) ---- */
+  spesa: [
+    { t: `Cereali e pane`, v: `pasta 350 g · riso 500 g · farro 200 g · avena 300 g · pane integrale 600 g · granola 150 g · fette biscottate · gallette di riso` },
+    { t: `Legumi`, v: `lenticchie secche 100 g · ceci secchi 50 g · piselli surgelati 100 g` },
+    { t: `Proteine`, v: `uova 15 · yogurt greco 750 g · petto di pollo 400 g · fesa di tacchino 150 g · manzo magro 250 g · salmone 350 g · tonno al naturale 2 scatolette · bresaola 100 g · ricotta 50 g · fiocchi di latte 150 g · parmigiano 100 g` },
+    { t: `Frutta e verdura`, v: `verdure miste 3 kg · patate 1,5 kg · frutta di stagione 1,6 kg · banane 1,2 kg · pomodorini 150 g` },
+    { t: `Dispensa`, v: `latte 1 L · olio extravergine 150 ml · miele 130 g · marmellata · burro d'arachidi · noci · olive · passata` }
+  ],
+
+  /* ---- Integratori ---- */
+  integratori: {
+    sotto: `Il piano funziona anche senza`,
+    schede: [
+      { nome: `Creatina monoidrato`, tag: `CONSIGLIATA`, righe: [
+        `<b>Quanta:</b> 3-5 g al giorno, tutti i giorni, anche a riposo, con un pasto o con la merenda. Niente fase di carico.`,
+        `<b>A cosa serve:</b> più forza e più ripetizioni negli sforzi brevi e intensi: squat, trazioni, burpee, salti. L'effetto pieno arriva dopo circa 4 settimane.`,
+        `<b>Contro:</b> trattiene 1-2 kg di acqua nei muscoli. In una gara tutta in salita pesa, per questo la usi finché il carico in palestra cresce e smetti entro metà maggio, circa 6 settimane prima.`,
+        `<b>Cosa comprare:</b> creatina monoidrato pura in polvere, marchio Creapure. Le capsule costano molto di più per grammo.`,
+        `<b>Dove:</b> Bulk, Prozis, Fitadium.` ] },
+      { nome: `Proteine del siero`, tag: `FACOLTATIVE`, righe: [
+        `<b>Servono?</b> No: il piano ti porta a circa 140 g di proteine con cibo normale. Sono una comodità per il recupero quando non puoi cucinare.`,
+        `<b>Quanta:</b> un misurino (circa 30 g, 24 g di proteine) al giorno al massimo, come nello shake M1.`,
+        `<b>Cosa comprare:</b> whey isolate o concentrata con test antidoping di lotto: cerca il marchio Informed Sport o Informed Choice sulla confezione. Confronta il prezzo per porzione, non per confezione.`,
+        `<b>Dove:</b> Bulk (Informed Whey), MyProtein (Impact Whey Isolate), Prozis.` ] }
+    ],
+    nonServono: `<b>Non servono:</b> BCAA, bruciagrassi, multivitaminici (se mangi vario) e pre-allenamento con stimolanti. <b>Prima di iniziare la creatina</b> chiedi al medico se hai problemi ai reni o prendi farmaci.`
+  },
+
+  avvertenza: `Indicazioni generali per un adulto sano, non sostituiscono il parere di un medico o di un dietista. Valori nutrizionali stimati da tabelle medie, con un margine di circa ±10%. Fonti: Australian Institute of Sport (creatina), schede dei produttori.`
+};
+
+/* =====================================================================
+   PIANO  —  dati estratti dal PDF "SPARTAN SPRINT – Nevegal 2027"
+   ===================================================================== */
+
+/* ---- Livelli di carico (legenda del PDF) ---- */
+const LEVELS = [
+  { k: 'RISCALDAMENTO', bars: 1, reps: '8-10', pct: '40-60% del peso di lavoro', feel: 'Facile: prepara muscoli e tecnica prima delle serie vere.' },
+  { k: 'LEGGERO',       bars: 2, reps: '12-15', pct: '≈ 60-70%', feel: 'Peso comodo, tante ripetizioni: conta il controllo.' },
+  { k: 'MEDIO',         bars: 3, reps: '10-12', pct: '≈ 70-78%', feel: 'Peso moderato: le ultime ripetizioni si sentono, ma resti pulito.' },
+  { k: 'MEDIO-ALTO',    bars: 4, reps: '8-10', pct: '≈ 78-83%', feel: 'Peso impegnativo: ripetizioni lente, concentrazione alta.' },
+  { k: 'ALTO',          bars: 5, reps: '6-8', pct: '≈ 83-88%', feel: 'Il più pesante della scheda: poche ripetizioni, recupero lungo.' },
+  { k: 'CORPO LIBERO',  bars: 0, reps: 'come indicato', pct: 'nessun peso', feel: 'Nessun carico aggiuntivo: conta la tecnica.' }
+];
+const LEVEL = Object.fromEntries(LEVELS.map(l => [l.k, l]));
+/* Scarico: un gradino verso il basso. CORPO LIBERO resta invariato, RISCALDAMENTO è il minimo. */
+function stepDown(k) {
+  if (k === 'CORPO LIBERO') return k;
+  const i = LEVELS.findIndex(l => l.k === k);
+  return LEVELS[Math.max(0, i - 1)].k;
+}
+/* Scarico: metà delle serie, arrotondate per eccesso (3 → 2, 4 → 2). */
+const halfSets = n => Math.ceil(n / 2);
+
+/* ---- Fasi ---- */
+const PHASES = [
+  { n: 1, name: 'BASE',         w: [1, 10],  range: '23 Nov 2026 – 31 Gen 2027', rir: 'RIR 2-3', rirShort: 'RIR 2-3',
+    desc: 'Tecnica e abitudine. Corsa a intervalli corri-cammina fino a 20 minuti continui.' },
+  { n: 2, name: 'COSTRUZIONE',  w: [11, 20], range: '1 Feb – 11 Apr 2027',       rir: 'RIR 1-2', rirShort: 'RIR 1-2',
+    desc: 'Carichi più alti e corsa continua 25-35 minuti con variazioni di ritmo.' },
+  { n: 3, name: 'SPECIFICA',    w: [21, 29], range: '12 Apr – 13 Giu 2027',      rir: 'RIR 1-2', rirShort: 'RIR 1-2',
+    desc: 'Ripetute a ritmo gara, salite lunghe, circuiti con ostacoli, test dei 5 km.' },
+  { n: 4, name: 'GARA',         w: [30, 31], range: '14 – 27 Giu 2027',          rir: 'Tapering / vivacità', rirShort: 'TAPERING',
+    desc: 'Meno volume, stessa vivacità. Arrivi alla partenza con le gambe fresche.' }
+];
+const DELOAD_WEEKS = [4, 8, 12, 16, 20, 24, 28];
+const phaseOf = w => PHASES.find(p => w >= p.w[0] && w <= p.w[1]);
+
+/* ---- Esercizi dei 4 giorni ---- */
+const DAYS = {
+  lower: {
+    id: 'lower', title: 'Lower body', sub: 'Gambe forti per salite, carry e muri', minutes: '~72', rir: true,
+    warm: { min: '~10 min', items: [
+      { name: 'Cyclette o tapis a ritmo leggero', note: 'Devi riuscire a parlare.', amount: '5 min', draw: 'bike' },
+      { name: 'Cerchi delle anche + affondi dinamici con rotazione', note: 'Mobilità di anche e caviglie.', amount: '1 × 8 per lato', draw: 'lungeTwist' },
+      { name: 'Squat a corpo libero', note: 'Scendi controllato, talloni a terra.', amount: '2 × 10', draw: 'bodySquat' },
+      { name: 'Ponte glutei', note: 'Stringi i glutei in alto per 1 secondo.', amount: '1 × 15', draw: 'bridge' }
+    ] },
+    main: { min: '~55 min', items: [
+      { pre: true, name: 'Squat al multipower · 2 serie di riscaldamento', note: 'Circa 40% e poi 60% del peso di lavoro.', sets: 2, reps: '10', rest: 'Rec. 1′', load: 'RISCALDAMENTO', draw: 'squat', keepSets: true },
+      { name: 'Squat al multipower', note: 'Piedi leggermente avanti rispetto alla barra, scendi almeno a parallela.', sets: 4, reps: '6-8', rest: 'Rec. 2′30″', load: 'ALTO', draw: 'squat' },
+      { name: 'Step-up con manubri su panca o gradino', note: 'Altezza 40-50 cm. Spingi con la gamba sopra, scendi controllato.', sets: 3, reps: '8-10', per: 'per gamba', rest: 'Rec. 1′30″', load: 'MEDIO', draw: 'stepup' },
+      { name: 'Hyperextension a 45° · glutei e femorali', note: 'Scendi controllato, risali a corpo in linea senza inarcare. Disco al petto solo con tecnica solida.', sets: 3, reps: '10-12', rest: 'Rec. 1′30″', load: 'CORPO LIBERO', draw: 'hyper' },
+      { name: 'Leg curl', note: 'Movimento controllato, niente slancio.', sets: 3, reps: '10-12', rest: 'Rec. 1′30″', load: 'MEDIO', draw: 'legcurl' },
+      { name: 'Affondi camminati con manubri', note: 'Passo lungo, busto eretto. Allena la gamba per i carry in salita.', sets: 3, reps: '10', per: 'per gamba', rest: 'Rec. 1′30″', load: 'MEDIO', draw: 'lunge' },
+      { name: 'Calf in piedi (o alla leg press)', note: 'Escursione completa: allunga in basso, pausa in alto. Protegge caviglie e tendini in corsa.', sets: 4, reps: '12-15', rest: 'Rec. 1′', load: 'LEGGERO', draw: 'calf' },
+      { name: 'Sollevamento ginocchia alla sedia romana', note: 'Schiena appoggiata, porta le ginocchia al petto senza dondolare.', sets: 3, reps: '10-12', rest: 'Rec. 1′', load: 'CORPO LIBERO', draw: 'romanchair' }
+    ] },
+    cool: { min: '~7 min', items: [
+      { name: 'Cyclette molto lenta', note: 'Fai scendere gradualmente battito e respiro.', amount: '3 min', draw: 'bike' },
+      { name: 'Stretching quadricipiti, femorali, glutei (posizione del 4)', note: 'Allunga senza dolore, respira lento.', amount: '30″ per posizione', draw: 'fig4' },
+      { name: 'Stretching polpacci e flessori dell\'anca', note: '', amount: '30″ per lato', draw: 'calfStretch' }
+    ] },
+    foot: 'Le figure mostrano partenza (a sinistra) e arrivo (a destra). Nelle settimane di scarico fai metà serie e carichi un gradino sotto.'
+  },
+
+  upper: {
+    id: 'upper', title: 'Upper body', sub: 'Trazioni, spinta, braccia e presa per funi, muri e carry', minutes: '~60', rir: true,
+    warm: { min: '~8 min', items: [
+      { name: 'Vogatore o cyclette a ritmo leggero', note: 'Devi riuscire a parlare.', amount: '4 min', draw: 'rowing' },
+      { name: 'Cerchi di spalle e rotazioni toraciche', note: 'Spalle e schiena pronte a tirare.', amount: '1 × 10', draw: 'shoulderCircles' },
+      { name: 'Dead hang leggero e flessioni sulle ginocchia', note: 'Scalda presa e spinta senza stancarti.', amount: '1 × 15″ + 1 × 8', draw: 'kneePushup' }
+    ] },
+    main: { min: '~46 min', items: [
+      { name: 'Trazioni assistite o con elastico', note: 'Parti dalle braccia tese, porta il mento sopra la sbarra. Alternativa: lat machine 4 × 8-10.', sets: 4, reps: '5-8', rest: 'Rec. 2′', load: 'ALTO', draw: 'pullup', id: 'trazioni' },
+      { name: 'Rematore al cavo basso, presa neutra', note: 'Anche alla macchina. Gomiti indietro, pausa di 1 secondo a fine movimento.', sets: 3, reps: '10-12', rest: 'Rec. 1′30″', load: 'MEDIO', draw: 'cablerow' },
+      { name: 'Panca piana con bilanciere', note: 'Prima fai 2 serie di riscaldamento. Alternative: multipower o manubri. Scapole addotte, piedi a terra.', sets: 3, reps: '6-8', rest: 'Rec. 2′', load: 'ALTO', draw: 'bench' },
+      { name: 'Curl con bilanciere EZ · bicipiti', note: 'Gomiti fermi lungo i fianchi, niente slancio con la schiena.', sets: 3, reps: '10-12', rest: 'Rec. 1′', load: 'MEDIO', draw: 'curl' },
+      { name: 'Curl inverso con bilanciere EZ · avambracci', note: 'Presa prona (palmi in giù), gomiti fermi lungo i fianchi. Peso leggero.', sets: 3, reps: '10-12', rest: 'Rec. 1′', load: 'LEGGERO', draw: 'revcurl' },
+      { name: 'Farmer carry con manubri pesanti', note: 'Spalle basse, busto dritto, passi regolari. Presa forte per i carry di gara.', sets: 3, reps: '30 m', rest: 'Rec. 1′30″', load: 'ALTO', draw: 'farmer' },
+      { name: 'Dead hang alla sbarra', note: 'Appeso con spalle attive, senza dondolare. Prova ad aggiungere 5 secondi a settimana.', sets: 3, reps: '20-40″', rest: 'Rec. 1′', load: 'CORPO LIBERO', draw: 'deadhang' }
+    ] },
+    cool: { min: '~6 min', items: [
+      { name: 'Stretching petto, dorsali e spalle', note: 'Allunga senza dolore, respira lento.', amount: '30″ per posizione', draw: 'chestStretch' },
+      { name: 'Stretching avambracci (palmo e dorso della mano)', note: 'Braccio teso, tira le dita verso di te.', amount: '30″ per lato', draw: 'forearmStretch' }
+    ] },
+    foot: 'Le figure mostrano partenza (a sinistra) e arrivo (a destra). Quando le trazioni assistite diventano facili, riduci l\'aiuto invece di aggiungere ripetizioni.'
+  },
+
+  ostacoli: {
+    id: 'ostacoli', title: 'Ostacoli', sub: 'Salita, burpee, strisciare, carry e salti · il giorno più simile alla gara', minutes: '~67', rir: false,
+    warm: { min: '~10 min', items: [
+      { name: 'Camminata veloce o corsa lenta, con un tratto in salita', note: 'Devi riuscire a parlare.', amount: '6 min', draw: 'hill' },
+      { name: 'Cerchi delle anche + affondi dinamici con rotazione', note: 'Mobilità di anche e caviglie.', amount: '1 × 8 per lato', draw: 'lungeTwist' },
+      { name: 'Burpee lenti', note: 'Prepara spalle, anche e fiato.', amount: '1 × 5', draw: 'burpee' }
+    ] },
+    main: { min: '~49 min', items: [] /* costruita da ostacoliMain(week) */ },
+    cool: { min: '~8 min', items: [
+      { name: 'Camminata lenta in piano', note: 'Fai scendere gradualmente battito e respiro.', amount: '5 min', draw: 'walk' },
+      { name: 'Stretching polpacci, quadricipiti, flessori dell\'anca, spalle', note: 'Allunga senza dolore, respira lento.', amount: '30″ per posizione', draw: 'calfStretch' }
+    ] },
+    foot: 'Le figure mostrano partenza (a sinistra) e arrivo (a destra). Fai prima la salita, poi gli esercizi 2-6 con serie e recuperi indicati.'
+  },
+
+  corsa: {
+    id: 'corsa', title: 'Corsa', sub: 'Strada o pista · dal corri-cammina ai ritmi di gara', minutes: '~40', rir: false,
+    warm: { min: '~8 min', items: [
+      { name: 'Camminata veloce', note: 'Alza il battito poco alla volta.', amount: '5 min', draw: 'walk' },
+      { name: 'Mobilità dinamica: skip, calciata, cerchi delle anche', note: 'Caviglie e anche pronte prima di correre.', amount: '2 × 20 m', draw: 'skip' }
+    ] },
+    cool: { min: '~6 min', items: [
+      { name: 'Camminata lenta', note: 'Fai scendere gradualmente battito e respiro.', amount: '4 min', draw: 'walk' },
+      { name: 'Stretching polpacci, quadricipiti e flessori dell\'anca', note: 'Allunga senza dolore, respira lento.', amount: '30″ per lato', draw: 'calfStretch' }
+    ] },
+    foot: 'Scarpe da corsa adatte e, se puoi, sempre lo stesso percorso: così confronti i progressi. Fastidio a tibie o ginocchia? Torna alla seduta della fase precedente e ripetila per una settimana prima di salire.'
+  }
+};
+
+/* ---- Ritmi di corsa ---- */
+const PACES = {
+  'FACILE':    { bars: 1, feel: 'Parli in frasi intere. Respiri dal naso.' },
+  'VIVACE':    { bars: 2, feel: 'Frasi brevi. Passo più lungo, ancora controllato.' },
+  'SOSTENUTO': { bars: 3, feel: 'Poche parole. Fatica chiara ma gestibile per 2′.' },
+  'GARA':      { bars: 4, feel: 'Il passo che reggi per 5 km. Non uno scatto.' }
+};
+
+/* ---- Corsa: parte principale per settimana (PDF pagina 3) ---- */
+const RUN_BLOCKS = [
+  { w: [1, 2],   text: '6 × (2′ corsa + 2′ cammino)',                              total: '24′',  pace: 'FACILE' },
+  { w: [3, 4],   text: '5 × (3′ corsa + 1′30″ cammino)',                           total: '23′',  pace: 'FACILE' },
+  { w: [5, 6],   text: '4 × (5′ corsa + 1′30″ cammino)',                           total: '26′',  pace: 'FACILE' },
+  { w: [7, 8],   text: '3 × (8′ corsa + 1′30″ cammino)',                           total: '28′',  pace: 'FACILE' },
+  { w: [9, 9],   text: '2 × 10′ di corsa con 2′ di cammino',                       total: '22′',  pace: 'FACILE' },
+  { w: [10, 10], text: '20′ continui',                                             total: '20′',  pace: 'FACILE' },
+  { w: [11, 12], text: '25′ di corsa continua',                                    total: '25′',  pace: 'FACILE' },
+  { w: [13, 14], text: '30′ continui con 4 × 1′ più veloci',                       total: '30′',  pace: 'VIVACE' },
+  { w: [15, 16], text: '30′ continui con 6 × 1′ più veloci',                       total: '30′',  pace: 'VIVACE' },
+  { w: [17, 20], text: '35′ con 5 × 2′ a ritmo sostenuto, 2′ facili tra una e l\'altra', total: '35′', pace: 'SOSTENUTO' },
+  { w: [21, 23], text: '5 × 3′ a ritmo gara, 2′ di trotto lento tra una e l\'altra', total: '25′', pace: 'GARA' },
+  { w: [25, 25], text: 'Test: 5 km a ritmo gara, poi 5′ di cammino. Segna il tempo.', total: '~30′', pace: 'GARA' },
+  { w: [26, 27], text: '3 × 1 km a ritmo gara, 2′ di cammino tra una e l\'altra',  total: '~25′', pace: 'GARA' },
+  { w: [29, 29], text: '20′ facili con 4 × 1′ vivaci',                             total: '24′',  pace: 'VIVACE' },
+  { w: [30, 30], text: '25′ facili con 4 allunghi da 20″',                         total: '27′',  pace: 'FACILE' },
+  { w: [31, 31], text: 'Martedì della gara: 15′ facili con 3 allunghi da 20″',     total: '16′',  pace: 'FACILE' }
+];
+/* Scarico: seduta del blocco accorciata di circa un quarto, tutta a ritmo facile.
+   Sett. 24 e 28 non hanno una riga propria nel PDF: derivate dai blocchi 21-23 e 26-27. */
+const RUN_DELOAD = {
+  4:  { text: '4 × (3′ corsa + 1′30″ cammino)',  total: '18′' },
+  8:  { text: '3 × (6′ corsa + 1′30″ cammino)',  total: '22′' },
+  12: { text: '19′ di corsa continua',           total: '19′' },
+  16: { text: '23′ di corsa continua',           total: '23′' },
+  20: { text: '26′ di corsa continua',           total: '26′' },
+  24: { text: '19′ di corsa continua',           total: '19′' },
+  28: { text: '19′ di corsa continua',           total: '19′' }
+};
+function corsaMain(week) {
+  const b = RUN_BLOCKS.find(x => week >= x.w[0] && week <= x.w[1]);
+  const dl = RUN_DELOAD[week];
+  if (dl) return { text: dl.text, total: dl.total, pace: 'FACILE', was: b ? { text: b.text, total: b.total, pace: b.pace } : null };
+  return { text: b.text, total: b.total, pace: b.pace, was: null };
+}
+
+/* ---- Ostacoli: esercizi 1-6 (PDF pagina 5) ---- */
+const OST_EX = {
+  burpee:   { name: 'Burpee', note: 'Ritmo regolare, petto a terra, salto con le braccia in alto. In gara un ostacolo fallito costa 30 burpee.', sets: 3, reps: '8', rest: 'Rec. 1′', load: 'CORPO LIBERO', draw: 'burpee' },
+  bear:     { name: 'Bear crawl · strisciare a quattro zampe', note: 'Ginocchia a pochi cm da terra, schiena piatta. Simula il filo spinato.', sets: 3, reps: '15 m', rest: 'Rec. 1′', load: 'CORPO LIBERO', draw: 'bearcrawl' },
+  carry:    { name: 'Carry al petto in salita · zaino, sacco o disco', note: 'Peso 10-15 kg stretto al petto, schiena dritta, passi corti. Allena sacco e secchio.', sets: 3, reps: '40 m', rest: 'Rec. 1′30″', load: 'MEDIO-ALTO', draw: 'carry' },
+  box:      { name: 'Salti su panca', note: 'Panca robusta e bassa. Salta, atterra morbido a piedi pari, scendi a passo. Per muri e salti.', sets: 3, reps: '6', rest: 'Rec. 1′30″', load: 'CORPO LIBERO', draw: 'boxjump' },
+  invrow:   { name: 'Rematore inverso sotto la sbarra', note: 'Barra del multipower all\'altezza dei fianchi, corpo in linea, petto alla barra. Per funi e travi.', sets: 3, reps: '8-10', rest: 'Rec. 1′30″', load: 'CORPO LIBERO', draw: 'invrow' }
+};
+const HILL_NOTE = 'Passo corto, spingi con tutto il piede, mani libere. Discesa sempre camminando.';
+function hillItem(week, deload) {
+  const ph = phaseOf(week).n;
+  const base = { name: 'Salita veloce · sentiero, collina o tapis al 10-12%', draw: 'hill', load: 'MEDIO', keepSets: true, hill: true };
+  if (ph === 1) {
+    const mins = deload ? 15 : 20;
+    return Object.assign(base, { sets: 1, reps: mins + '′', per: 'continui', note: 'Cammino veloce in salita, passo corto. Se serve, fermati e riparti. ' + 'Discesa sempre camminando.',
+      was: deload ? '20′' : null });
+  }
+  if (ph === 2) {
+    const n = deload ? 4 : 8;
+    return Object.assign(base, { sets: n, reps: '1′', per: 'in salita forte, discesa camminando', note: HILL_NOTE, was: deload ? '8' : null });
+  }
+  if (ph === 3) {
+    const n = deload ? 5 : 10;
+    return Object.assign(base, { sets: n, reps: '90″', per: 'in salita forte, discesa camminando', note: HILL_NOTE, was: deload ? '10' : null });
+  }
+  /* Fase 4, settimana 30 */
+  return Object.assign(base, { sets: 1, reps: '15′', per: 'in salita, facili', load: 'LEGGERO', note: HILL_NOTE });
+}
+function ostacoliMain(week, deload) {
+  const ph = phaseOf(week).n;
+  const clone = o => Object.assign({}, o);
+  const burpee = clone(OST_EX.burpee), carry = clone(OST_EX.carry);
+  if (ph === 3) { burpee.reps = '12'; carry.reps = '50 m'; }
+  let items = [hillItem(week, deload), burpee, clone(OST_EX.bear), carry, clone(OST_EX.box), clone(OST_EX.invrow)];
+  if (week === 30) items = items.map((it, i) => i === 0 ? it : Object.assign(it, { sets: 2, setsWas: 3 }));
+  return items;
+}
+
+/* ---- Gara (PDF pagina 6) ---- */
+const RACE = {
+  quando: '26-27 giugno 2027', dove: 'Belluno-Nevegal', tipo: 'Spartan Race Sprint',
+  stats: [{ v: '5', l: 'KM' }, { v: '20', l: 'OSTACOLI' }, { v: '30', l: 'BURPEE DI PENALITÀ' }],
+  ostacoli: [
+    { n: 'Salita alla fune', serve: 'Presa, dorsali, gambe che bloccano la corda', dove: [['Upper', 'trazioni, dead hang'], ['Ostacoli', 'rematore inverso']] },
+    { n: 'Sacco, secchio, pietra (carry)', serve: 'Gambe, core, resistenza di forza, spesso in salita', dove: [['Lower', 'squat, step-up, affondi'], ['Ostacoli', 'carry al petto in salita']] },
+    { n: 'Muri', serve: 'Gambe esplosive, presa, spalle', dove: [['Ostacoli', 'salti su panca'], ['Upper', 'dead hang, farmer carry']] },
+    { n: 'Filo spinato (strisciare)', serve: 'Core, anche, spalle, restare bassi', dove: [['Ostacoli', 'bear crawl'], ['Lower', 'sedia romana']] },
+    { n: 'Traversate (monkey bar, anelli)', serve: 'Presa e spalle, senza stancare gli avambracci', dove: [['Upper', 'dead hang, trazioni, curl inverso']] },
+    { n: 'Penalità: 30 burpee', serve: 'Resistenza generale e ritmo costante', dove: [['Ostacoli', 'burpee'], ['Corsa', 'ripetute']] }
+  ],
+  settimana: [
+    { g: 'LUNEDÌ',  t: 'Lower body leggero', d: '2 serie per esercizio, carichi un gradino sotto, niente cedimento.' },
+    { g: 'MARTEDÌ', t: 'Corsa breve',        d: '15′ facili con 3 allunghi da 20″. Devi finire con energia.' },
+    { g: 'GIOVEDÌ', t: 'Upper body leggero', d: '2 serie per esercizio, niente trazioni al limite: la presa deve essere fresca.' },
+    { g: 'VENERDÌ', t: 'Riposo',             d: 'Dormi bene, prepara la borsa, cammina 20 minuti se vuoi muoverti.' },
+    { g: 'SAB-DOM', t: 'Gara',               d: 'Sul sito ufficiale lo Sprint è indicato il 27 giugno: conferma il giorno e l\'orario di partenza.' }
+  ],
+  giorno: [
+    ['Colazione', '2-3 ore prima, con carboidrati facili: pane, marmellata, banana.'],
+    ['Abbigliamento', 'tecnico, niente cotone: con acqua e fango si appesantisce.'],
+    ['Scarpe', 'da trail con buona suola, già usate in allenamento.'],
+    ['Parti piano', 'Nevegal è in salita e i primi chilometri decidono l\'energia che resta.'],
+    ['Niente di nuovo', 'cibo, scarpe e vestiti li hai provati nelle uscite.'],
+    ['Ostacolo fallito?', 'Riprova con calma, poi paga i burpee a ritmo regolare.']
+  ],
+  attrezzi: [
+    ['Barra per trazioni', 'lat machine, oppure trazioni assistite'],
+    ['Panca per i salti', 'gradino stabile alto 30-40 cm'],
+    ['Sacco o disco', 'zaino con zavorra, oppure disco al petto'],
+    ['Tapis inclinato', 'strada in salita o scalinata'],
+    ['Multipower', 'squat al bilanciere nel rack, oppure goblet squat'],
+    ['Hyperextension', 'pull-through ai cavi, oppure ponte glutei a una gamba']
+  ],
+  fonti: 'Dati gara dal sito ufficiale Spartan Race (Belluno-Nevegal 2027: Sprint da 5 km, 20 ostacoli). Dislivello e tipo di ostacoli esatti non sono pubblicati: controlla la mappa ufficiale quando esce.'
+};
+
+/* ---- Regole di progressione e note del piano (PDF pagine 1 e 5) ---- */
+const PROGRESSIONE = [
+  ['Squat', '+5 kg'],
+  ['Panca', '+2,5 kg'],
+  ['Curl e rematore', 'il minimo incremento disponibile']
+];
+const NOTE_PIANO = {
+  carichi: 'Il peso di lavoro è quello con cui chiudi tutte le serie lasciando le ripetizioni in riserva (RIR) indicate dalla fase. Ogni esercizio ha un livello di carico: più barre piene, più pesante deve sentirsi rispetto agli altri.',
+  percentuali: 'Le percentuali sono indicative e riferite al massimale, cioè il peso che solleveresti una sola volta. Non serve testarlo: parti più leggero e sali serie dopo serie fino a trovare il peso giusto.',
+  progressione: 'Sali di peso solo se chiudi tutte le serie al limite alto delle ripetizioni.',
+  scarico: 'Le settimane 4, 8, 12, 16, 20, 24 e 28 hanno stessi esercizi, metà delle serie, carichi un gradino sotto e corsa più corta e facile. Servono a recuperare e ad arrivare più forte alla settimana dopo.',
+  attrezzi: 'Attrezzi ipotizzati per la Fitactive di Fogliano Redipuglia: multipower, leg curl, calf machine, hyperextension, lat machine, cavi, panca, manubri, bilanciere EZ, sbarra per trazioni e una panca robusta per i salti.',
+  salute: 'Dolore articolare o acuto? Interrompi l\'esercizio e, se persiste, chiedi a un medico o a un istruttore.'
+};
+
+/* ---- Giorno di riposo / camminata ---- */
+const REST_DATA = {
+  recupero: [
+    'Camminata facile di 20-30 minuti, facoltativa: devi riuscire a parlare in frasi intere.',
+    'Se le gambe sono pesanti, resta in piano. La salita la fai già il sabato.',
+    'Dormi bene: è nel sonno che il corpo assorbe l\'allenamento.'
+  ],
+  mobilita: [
+    { name: 'Cerchi delle anche + affondi dinamici con rotazione', amount: '1 × 8 per lato', draw: 'lungeTwist' },
+    { name: 'Cerchi di spalle e rotazioni toraciche', amount: '1 × 10', draw: 'shoulderCircles' },
+    { name: 'Stretching quadricipiti, femorali, glutei (posizione del 4)', amount: '30″ per posizione', draw: 'fig4' },
+    { name: 'Stretching polpacci e flessori dell\'anca', amount: '30″ per lato', draw: 'calfStretch' }
+  ],
+  idratazione: [
+    'Acqua: 2-2,5 litri nell\'arco della giornata.',
+    'Urina chiara: è il segnale che stai bevendo abbastanza. Di più se fa caldo.'
+  ],
+  dieta: 'Oggi usa le porzioni di riposo: nella scheda Dieta trovi quantità e moduli.'
+};
+
+/* ---- Costruzione di una giornata ---- */
+const DOW_NAMES = ['Lunedì', 'Martedì', 'Mercoledì', 'Giovedì', 'Venerdì', 'Sabato', 'Domenica'];
+const DAY_BY_DOW = { 0: 'lower', 1: 'corsa', 3: 'upper', 5: 'ostacoli' };
+
+/* Adatta serie e carichi per scarico / settimana leggera. */
+function adaptItem(it, mode) {
+  const o = Object.assign({}, it);
+  if (mode && !it.keepSets && !it.pre) {
+    const s = halfSets(it.sets);
+    if (s !== it.sets) { o.setsWas = it.sets; o.sets = s; }
+  }
+  if (mode && !it.pre) {
+    const l = stepDown(it.load);
+    if (l !== it.load) { o.loadWas = it.load; o.load = l; }
+  }
+  return o;
+}
+function buildDay(week, dow) {
+  const ph = phaseOf(week);
+  const deload = DELOAD_WEEKS.includes(week);
+  const raceWeek = week === 31;
+  const dayName = DOW_NAMES[dow];
+  const out = { week, dow, dayName, phase: ph, deload, raceWeek, banner: null };
+
+  if (deload) out.banner = { type: 'scarico', title: 'SETTIMANA DI SCARICO',
+    text: 'Stessi esercizi, metà delle serie, carichi un gradino sotto, corsa più corta e facile.' };
+  if (raceWeek) out.banner = { type: 'gara', title: 'SETTIMANA DELLA GARA',
+    text: 'Gambe fresche: meno volume, stessa vivacità.' };
+
+  if (raceWeek && dow >= 5) { out.kind = 'gara'; out.label = 'GARA · ' + dayName.toUpperCase(); out.title = 'Gara'; return out; }
+  if (dow === 2 || dow === 4 || dow === 6) {
+    out.kind = 'rest'; out.label = 'RIPOSO · ' + dayName.toUpperCase(); out.title = 'Riposo o camminata';
+    if (raceWeek && dow === 4) out.raceNote = RACE.settimana.find(r => r.g === 'VENERDÌ').d;
+    const next = [1, 3, 3, 5, 5, 0, 0][dow]; // prossimo allenamento
+    out.next = DAYS[DAY_BY_DOW[next]].title;
+    out.nextDay = DOW_NAMES[next];
+    return out;
+  }
+
+  const key = DAY_BY_DOW[dow], D = DAYS[key];
+  out.kind = key; out.title = D.title; out.sub = D.sub; out.minutes = D.minutes; out.foot = D.foot;
+  const dayNo = { lower: 1, corsa: 2, upper: 3, ostacoli: 4 }[key];
+  out.label = 'GIORNO ' + dayNo + ' · ' + dayName.toUpperCase();
+  out.rirOn = D.rir; out.rir = ph.rirShort;
+  out.warm = D.warm; out.cool = D.cool;
+
+  if (raceWeek) out.raceNote = (RACE.settimana.find(r => r.g === dayName.toUpperCase()) || {}).d || '';
+
+  if (key === 'corsa') {
+    out.run = corsaMain(week);
+    out.count = 4; out.countLabel = 'ritmi';
+    return out;
+  }
+  const mode = deload || (raceWeek && (key === 'lower' || key === 'upper'));
+  let items = key === 'ostacoli' ? ostacoliMain(week, deload) : D.main.items;
+  items = items.map(it => adaptItem(it, key === 'ostacoli' ? (deload && !it.hill) : mode));
+  if (key === 'ostacoli' && deload) items[0].load = stepDown('MEDIO'), items[0].loadWas = 'MEDIO';
+  if (key === 'upper' && raceWeek) items = items.map(it => it.id === 'trazioni' ? Object.assign(it, { note: it.note + ' Settimana gara: niente trazioni al limite, la presa deve essere fresca.' }) : it);
+  if (raceWeek && (key === 'lower' || key === 'upper')) items = items.map(it => it.pre ? it : Object.assign(it, { note: it.note + ' Niente cedimento.' }));
+  let n = 0; items.forEach(it => { if (!it.pre) it.n = ++n; });
+  out.main = { min: D.main.min, items };
+  out.count = n; out.countLabel = 'esercizi';
+  return out;
+}
+
+/* ---- Disegni: estratti dalle illustrazioni del PDF (palette scura) ---- */
+const DRAW_PDF={"squat":{"a":"<line x1=\"4\" y1=\"2\" x2=\"4\" y2=\"46\" stroke=\"#9CA3AF\" stroke-width=\"1.6\"/><line x1=\"45\" y1=\"2\" x2=\"45\" y2=\"46\" stroke=\"#9CA3AF\" stroke-width=\"1.6\"/><line x1=\"2\" y1=\"46.5\" x2=\"46\" y2=\"46.5\" stroke=\"#9CA3AF\" stroke-width=\"1.6\"/><line x1=\"10\" y1=\"8\" x2=\"36\" y2=\"8\" stroke=\"#D9232E\" stroke-width=\"2.8\"/><line x1=\"10\" y1=\"4\" x2=\"10\" y2=\"12\" stroke=\"#D9232E\" stroke-width=\"2.8\"/><line x1=\"36\" y1=\"4\" x2=\"36\" y2=\"12\" stroke=\"#D9232E\" stroke-width=\"2.8\"/><circle cx=\"23\" cy=\"4\" r=\"2.8\" fill=\"#0F0F13\"/><polyline points=\"23,7 23,25 24,36 23,46 27,46\"/><polyline points=\"23,9 28,13 31,8\"/>","b":"<line x1=\"4\" y1=\"2\" x2=\"4\" y2=\"46\" stroke=\"#9CA3AF\" stroke-width=\"1.6\"/><line x1=\"45\" y1=\"2\" x2=\"45\" y2=\"46\" stroke=\"#9CA3AF\" stroke-width=\"1.6\"/><line x1=\"2\" y1=\"46.5\" x2=\"46\" y2=\"46.5\" stroke=\"#9CA3AF\" stroke-width=\"1.6\"/><line x1=\"17\" y1=\"23\" x2=\"43\" y2=\"23\" stroke=\"#D9232E\" stroke-width=\"2.8\"/><line x1=\"17\" y1=\"19\" x2=\"17\" y2=\"27\" stroke=\"#D9232E\" stroke-width=\"2.8\"/><line x1=\"43\" y1=\"19\" x2=\"43\" y2=\"27\" stroke=\"#D9232E\" stroke-width=\"2.8\"/><circle cx=\"33\" cy=\"18.5\" r=\"2.8\" fill=\"#0F0F13\"/><polyline points=\"30,22 20.5,37.5\"/><polyline points=\"20.5,37.5 31,36 26,46 30,46\"/><polyline points=\"30,24 35,27 36,23\"/>"},"stepup":{"a":"<polyline points=\"25,46 25,35 44,35 44,46\" stroke=\"#9CA3AF\" stroke-width=\"1.6\"/><line x1=\"2\" y1=\"46.5\" x2=\"25\" y2=\"46.5\" stroke=\"#9CA3AF\" stroke-width=\"1.6\"/><circle cx=\"13\" cy=\"6\" r=\"2.8\" fill=\"#0F0F13\"/><polyline points=\"13,9 14,26\"/><polyline points=\"13,12 11,19 12,26\"/><circle cx=\"12\" cy=\"28\" r=\"2.4\" fill=\"#D9232E\" stroke=\"#D9232E\"/><polyline points=\"14,26 14,36 14,45 18,45\"/><polyline points=\"14,26 22,29 27,34\"/>","b":"<polyline points=\"25,46 25,35 44,35 44,46\" stroke=\"#9CA3AF\" stroke-width=\"1.6\"/><line x1=\"2\" y1=\"46.5\" x2=\"25\" y2=\"46.5\" stroke=\"#9CA3AF\" stroke-width=\"1.6\"/><circle cx=\"34\" cy=\"5\" r=\"2.8\" fill=\"#0F0F13\"/><polyline points=\"34,8 34,24\"/><polyline points=\"34,11 32,18 33,25\"/><circle cx=\"33\" cy=\"27\" r=\"2.4\" fill=\"#D9232E\" stroke=\"#D9232E\"/><polyline points=\"34,24 33,34 37,34\"/><polyline points=\"34,24 40,27 38,31\"/>"},"hyper":{"a":"<line x1=\"24\" y1=\"28\" x2=\"42\" y2=\"46\" stroke=\"#9CA3AF\" stroke-width=\"2.4\"/><line x1=\"30\" y1=\"46.5\" x2=\"45\" y2=\"46.5\" stroke=\"#9CA3AF\" stroke-width=\"1.6\"/><circle cx=\"10.5\" cy=\"10.5\" r=\"2.8\" fill=\"#0F0F13\"/><polyline points=\"13,13 26,26 41,41\"/>","b":"<line x1=\"24\" y1=\"28\" x2=\"42\" y2=\"46\" stroke=\"#9CA3AF\" stroke-width=\"2.4\"/><line x1=\"30\" y1=\"46.5\" x2=\"45\" y2=\"46.5\" stroke=\"#9CA3AF\" stroke-width=\"1.6\"/><circle cx=\"11.5\" cy=\"41\" r=\"2.8\" fill=\"#0F0F13\"/><polyline points=\"15,37 26,26 41,41\"/>"},"legcurl":{"a":"<line x1=\"3\" y1=\"34.5\" x2=\"36\" y2=\"34.5\" stroke=\"#9CA3AF\" stroke-width=\"1.6\"/><line x1=\"42\" y1=\"27\" x2=\"42\" y2=\"35\" stroke=\"#D9232E\" stroke-width=\"2.8\"/><circle cx=\"5\" cy=\"29\" r=\"2.8\" fill=\"#0F0F13\"/><polyline points=\"8,31 23,31 34,31 44,31\"/>","b":"<line x1=\"3\" y1=\"34.5\" x2=\"36\" y2=\"34.5\" stroke=\"#9CA3AF\" stroke-width=\"1.6\"/><line x1=\"30\" y1=\"21\" x2=\"38\" y2=\"21\" stroke=\"#D9232E\" stroke-width=\"2.8\"/><circle cx=\"5\" cy=\"29\" r=\"2.8\" fill=\"#0F0F13\"/><polyline points=\"8,31 23,31 34,31 34,21\"/>"},"lunge":{"a":"<line x1=\"2\" y1=\"46.5\" x2=\"44\" y2=\"46.5\" stroke=\"#9CA3AF\" stroke-width=\"1.6\"/><circle cx=\"23\" cy=\"6\" r=\"2.8\" fill=\"#0F0F13\"/><polyline points=\"23,9 23,24 23.5,35 23,45 27,45\"/><polyline points=\"23,11 24,19 24,25\"/><circle cx=\"24\" cy=\"26\" r=\"2.5\" fill=\"#D9232E\" stroke=\"#D9232E\"/>","b":"<line x1=\"2\" y1=\"46.5\" x2=\"44\" y2=\"46.5\" stroke=\"#9CA3AF\" stroke-width=\"1.6\"/><circle cx=\"22\" cy=\"9.5\" r=\"2.8\" fill=\"#0F0F13\"/><polyline points=\"22,13 22,29\"/><polyline points=\"22,29 31,33 31,43 35,43\"/><polyline points=\"22,29 16.5,38.5 8,44\"/><polyline points=\"22,15 24,22 24,28\"/><circle cx=\"24\" cy=\"29\" r=\"2.4\" fill=\"#D9232E\" stroke=\"#D9232E\"/>"},"calf":{"a":"<line x1=\"8\" y1=\"46.8\" x2=\"38\" y2=\"46.8\" stroke=\"#9CA3AF\" stroke-width=\"1.6\"/><circle cx=\"23\" cy=\"8\" r=\"2.6\" fill=\"#0F0F13\"/><polyline points=\"23,11 23,26 23.5,36 22,45\"/><polyline points=\"18,46 27,46\"/><polyline points=\"23,13 24,20 24,26\"/><circle cx=\"24\" cy=\"27\" r=\"2.4\" fill=\"#D9232E\" stroke=\"#D9232E\"/>","b":"<line x1=\"8\" y1=\"46.8\" x2=\"38\" y2=\"46.8\" stroke=\"#9CA3AF\" stroke-width=\"1.6\"/><circle cx=\"23\" cy=\"3\" r=\"2.6\" fill=\"#0F0F13\"/><polyline points=\"23,6 23,21 23.5,31 22,40\"/><polyline points=\"19,41.5 27,46\"/><polyline points=\"23,8 24,15 24,21\"/><circle cx=\"24\" cy=\"22\" r=\"2.4\" fill=\"#D9232E\" stroke=\"#D9232E\"/>"},"romanchair":{"a":"<line x1=\"6\" y1=\"3\" x2=\"6\" y2=\"34\" stroke=\"#9CA3AF\" stroke-width=\"2.4\"/><line x1=\"8\" y1=\"14\" x2=\"20\" y2=\"14\" stroke=\"#9CA3AF\" stroke-width=\"2.4\"/><circle cx=\"11\" cy=\"6\" r=\"2.8\" fill=\"#0F0F13\"/><polyline points=\"11,9 11,26\"/><polyline points=\"11,13 18,13\"/><polyline points=\"11,26 12,36 12,45 16,45\"/>","b":"<line x1=\"6\" y1=\"3\" x2=\"6\" y2=\"34\" stroke=\"#9CA3AF\" stroke-width=\"2.4\"/><line x1=\"8\" y1=\"14\" x2=\"20\" y2=\"14\" stroke=\"#9CA3AF\" stroke-width=\"2.4\"/><circle cx=\"11\" cy=\"6\" r=\"2.8\" fill=\"#0F0F13\"/><polyline points=\"11,9 11,26\"/><polyline points=\"11,13 18,13\"/><polyline points=\"11,26 23,24 20,34\"/><circle cx=\"23\" cy=\"24\" r=\"2.3\" fill=\"#D9232E\" stroke=\"#D9232E\"/>"},"pullup":{"a":"<line x1=\"6\" y1=\"5\" x2=\"40\" y2=\"5\" stroke=\"#9CA3AF\" stroke-width=\"2.4\"/><circle cx=\"23\" cy=\"19\" r=\"2.8\" fill=\"#0F0F13\"/><polyline points=\"23,22 23,36 22,43 26,45\"/><polyline points=\"16,5 23,24 30,5\"/><circle cx=\"16\" cy=\"5\" r=\"2.2\" fill=\"#D9232E\" stroke=\"#D9232E\"/><circle cx=\"30\" cy=\"5\" r=\"2.2\" fill=\"#D9232E\" stroke=\"#D9232E\"/>","b":"<line x1=\"6\" y1=\"5\" x2=\"40\" y2=\"5\" stroke=\"#9CA3AF\" stroke-width=\"2.4\"/><circle cx=\"23\" cy=\"9\" r=\"2.8\" fill=\"#0F0F13\"/><polyline points=\"23,12 23,28 22,35 27,38\"/><polyline points=\"16,5 18,9 23,15 28,9 30,5\"/><circle cx=\"16\" cy=\"5\" r=\"2.2\" fill=\"#D9232E\" stroke=\"#D9232E\"/><circle cx=\"30\" cy=\"5\" r=\"2.2\" fill=\"#D9232E\" stroke=\"#D9232E\"/>"},"cablerow":{"a":"<line x1=\"6\" y1=\"38\" x2=\"20\" y2=\"38\" stroke=\"#9CA3AF\" stroke-width=\"1.6\"/><line x1=\"37\" y1=\"30\" x2=\"37\" y2=\"43\" stroke=\"#9CA3AF\" stroke-width=\"2.4\"/><line x1=\"38\" y1=\"22\" x2=\"46\" y2=\"22\" stroke=\"#9CA3AF\" stroke-width=\"1.6\"/><circle cx=\"21\" cy=\"14.5\" r=\"2.8\" fill=\"#0F0F13\"/><polyline points=\"20,19 14,35\"/><polyline points=\"14,35 25,32 34,37\"/><polyline points=\"20,21 34,22\"/><circle cx=\"35\" cy=\"22\" r=\"2.2\" fill=\"#D9232E\" stroke=\"#D9232E\"/>","b":"<line x1=\"6\" y1=\"38\" x2=\"20\" y2=\"38\" stroke=\"#9CA3AF\" stroke-width=\"1.6\"/><line x1=\"37\" y1=\"30\" x2=\"37\" y2=\"43\" stroke=\"#9CA3AF\" stroke-width=\"2.4\"/><line x1=\"22\" y1=\"26\" x2=\"46\" y2=\"26\" stroke=\"#9CA3AF\" stroke-width=\"1.6\"/><circle cx=\"16.5\" cy=\"14\" r=\"2.8\" fill=\"#0F0F13\"/><polyline points=\"16,18 14,35\"/><polyline points=\"14,35 25,32 34,37\"/><polyline points=\"16,21 11,25.9 18.5,26\"/><circle cx=\"19.5\" cy=\"26\" r=\"2.2\" fill=\"#D9232E\" stroke=\"#D9232E\"/>"},"bench":{"a":"<line x1=\"3\" y1=\"34.5\" x2=\"33\" y2=\"34.5\" stroke=\"#9CA3AF\" stroke-width=\"1.6\"/><line x1=\"2\" y1=\"45.5\" x2=\"44\" y2=\"45.5\" stroke=\"#9CA3AF\" stroke-width=\"1.6\"/><circle cx=\"4.5\" cy=\"28\" r=\"2.8\" fill=\"#0F0F13\"/><polyline points=\"8,30 25,30\"/><polyline points=\"25,30 35,31 37,43 41,43\"/><polyline points=\"9,30 9,16\"/><circle cx=\"9\" cy=\"13\" r=\"3\" fill=\"#0F0F13\" stroke=\"#D9232E\" stroke-width=\"2.6\"/>","b":"<line x1=\"3\" y1=\"34.5\" x2=\"33\" y2=\"34.5\" stroke=\"#9CA3AF\" stroke-width=\"1.6\"/><line x1=\"2\" y1=\"45.5\" x2=\"44\" y2=\"45.5\" stroke=\"#9CA3AF\" stroke-width=\"1.6\"/><circle cx=\"4.5\" cy=\"28\" r=\"2.8\" fill=\"#0F0F13\"/><polyline points=\"8,30 25,30\"/><polyline points=\"25,30 35,31 37,43 41,43\"/><polyline points=\"9,30 15,32 12.5,25.5\"/><circle cx=\"12.5\" cy=\"23\" r=\"3\" fill=\"#0F0F13\" stroke=\"#D9232E\" stroke-width=\"2.6\"/>"},"curl":{"a":"<line x1=\"8\" y1=\"46.8\" x2=\"38\" y2=\"46.8\" stroke=\"#9CA3AF\" stroke-width=\"1.6\"/><circle cx=\"23\" cy=\"6\" r=\"2.8\" fill=\"#0F0F13\"/><polyline points=\"23,9 23,26 23.5,36 23,45 27,45\"/><polyline points=\"23,11 24,19 25,27\"/><circle cx=\"26\" cy=\"28\" r=\"2.4\" fill=\"#D9232E\" stroke=\"#D9232E\"/>","b":"<line x1=\"8\" y1=\"46.8\" x2=\"38\" y2=\"46.8\" stroke=\"#9CA3AF\" stroke-width=\"1.6\"/><circle cx=\"23\" cy=\"6\" r=\"2.8\" fill=\"#0F0F13\"/><polyline points=\"23,9 23,26 23.5,36 23,45 27,45\"/><polyline points=\"23,11 24,19 31,15\"/><circle cx=\"32\" cy=\"14\" r=\"2.4\" fill=\"#D9232E\" stroke=\"#D9232E\"/>"},"revcurl":{"a":"<line x1=\"8\" y1=\"46.8\" x2=\"38\" y2=\"46.8\" stroke=\"#9CA3AF\" stroke-width=\"1.6\"/><circle cx=\"23\" cy=\"6\" r=\"2.8\" fill=\"#0F0F13\"/><polyline points=\"23,9 23,26 23.5,36 23,45 27,45\"/><polyline points=\"23,11 24,19 25,27\"/><circle cx=\"26\" cy=\"28\" r=\"2.4\" fill=\"#0F0F13\" stroke=\"#D9232E\" stroke-width=\"2.2\"/>","b":"<line x1=\"8\" y1=\"46.8\" x2=\"38\" y2=\"46.8\" stroke=\"#9CA3AF\" stroke-width=\"1.6\"/><circle cx=\"23\" cy=\"6\" r=\"2.8\" fill=\"#0F0F13\"/><polyline points=\"23,9 23,26 23.5,36 23,45 27,45\"/><polyline points=\"23,11 24,19 31,15\"/><circle cx=\"32\" cy=\"14\" r=\"2.4\" fill=\"#0F0F13\" stroke=\"#D9232E\" stroke-width=\"2.2\"/>"},"farmer":{"a":"<line x1=\"4\" y1=\"46.8\" x2=\"44\" y2=\"46.8\" stroke=\"#9CA3AF\" stroke-width=\"1.6\"/><circle cx=\"23\" cy=\"6\" r=\"2.8\" fill=\"#0F0F13\"/><polyline points=\"23,9 23,25\"/><polyline points=\"23,25 22,36 22,45 26,45\"/><polyline points=\"23,11 24,19 24,27\"/><rect x=\"19.5\" y=\"27\" width=\"9\" height=\"7\" rx=\"2\" fill=\"#D9232E\" stroke=\"#D9232E\"/>","b":"<line x1=\"4\" y1=\"46.8\" x2=\"44\" y2=\"46.8\" stroke=\"#9CA3AF\" stroke-width=\"1.6\"/><circle cx=\"23\" cy=\"6\" r=\"2.8\" fill=\"#0F0F13\"/><polyline points=\"23,9 23,25\"/><polyline points=\"23,25 30,35 31,45 35,45\"/><polyline points=\"23,25 16,36 13,45 17,45\"/><polyline points=\"23,11 24,19 24,27\"/><rect x=\"19.5\" y=\"27\" width=\"9\" height=\"7\" rx=\"2\" fill=\"#D9232E\" stroke=\"#D9232E\"/>"},"deadhang":{"a":"<line x1=\"6\" y1=\"5\" x2=\"40\" y2=\"5\" stroke=\"#9CA3AF\" stroke-width=\"2.4\"/><circle cx=\"23\" cy=\"19\" r=\"2.8\" fill=\"#0F0F13\"/><polyline points=\"23,22 23,36 22,43 26,45\"/><polyline points=\"16,5 23,24 30,5\"/><circle cx=\"16\" cy=\"5\" r=\"2.2\" fill=\"#D9232E\" stroke=\"#D9232E\"/><circle cx=\"30\" cy=\"5\" r=\"2.2\" fill=\"#D9232E\" stroke=\"#D9232E\"/>","b":"<circle cx=\"23\" cy=\"26\" r=\"12\" stroke=\"#D9232E\" stroke-width=\"2.4\"/><line x1=\"20\" y1=\"11\" x2=\"26\" y2=\"11\" stroke=\"#D9232E\" stroke-width=\"2.4\"/><line x1=\"23\" y1=\"11\" x2=\"23\" y2=\"14\" stroke=\"#D9232E\" stroke-width=\"2.4\"/><polyline points=\"23,26 23,18\" stroke=\"#D9232E\" stroke-width=\"2.4\"/><polyline points=\"23,26 29,29\" stroke=\"#D9232E\" stroke-width=\"2.4\"/>"},"hill":{"a":"<line x1=\"2\" y1=\"44\" x2=\"44\" y2=\"24\" stroke=\"#9CA3AF\" stroke-width=\"1.6\"/><circle cx=\"29\" cy=\"4.5\" r=\"2.8\" fill=\"#0F0F13\"/><polyline points=\"28,7.5 26,17\"/><polyline points=\"26,17 31,23 33,29.5\"/><polyline points=\"26,17 23,26 22,34\"/><polyline points=\"27,9 22,14 24,19\" stroke=\"#D9232E\"/>","b":"<line x1=\"2\" y1=\"44\" x2=\"44\" y2=\"24\" stroke=\"#9CA3AF\" stroke-width=\"1.6\"/><circle cx=\"29\" cy=\"4.5\" r=\"2.8\" fill=\"#0F0F13\"/><polyline points=\"28,7.5 26,17\"/><polyline points=\"26,17 32,24 35,28\"/><polyline points=\"26,17 26,26 26,32\"/><polyline points=\"27,9 33,13 31,18\" stroke=\"#D9232E\"/><text x=\"3\" y=\"15\" font-size=\"10\" font-weight=\"800\" fill=\"#D9232E\" stroke=\"none\" font-family=\"Inter, Arial, sans-serif\">12%</text>"},"burpee":{"a":"<line x1=\"2\" y1=\"46.5\" x2=\"46\" y2=\"46.5\" stroke=\"#9CA3AF\" stroke-width=\"1.6\"/><circle cx=\"23\" cy=\"9\" r=\"2.8\" fill=\"#0F0F13\"/><polyline points=\"23,12 23,28 23.5,37 23,45 27,45\"/><polyline points=\"23,14 19,7\"/><polyline points=\"23,14 27,7\"/><circle cx=\"19\" cy=\"6\" r=\"2\" fill=\"#D9232E\" stroke=\"#D9232E\"/><circle cx=\"27\" cy=\"6\" r=\"2\" fill=\"#D9232E\" stroke=\"#D9232E\"/>","b":"<line x1=\"2\" y1=\"45.5\" x2=\"46\" y2=\"45.5\" stroke=\"#9CA3AF\" stroke-width=\"1.6\"/><circle cx=\"8\" cy=\"29.5\" r=\"2.8\" fill=\"#0F0F13\"/><polyline points=\"12,32 42,40 44,44\"/><polyline points=\"12,32 12,43 4,43\"/><circle cx=\"5\" cy=\"43\" r=\"2\" fill=\"#D9232E\" stroke=\"#D9232E\"/>"},"bearcrawl":{"a":"<line x1=\"2\" y1=\"46.5\" x2=\"46\" y2=\"46.5\" stroke=\"#9CA3AF\" stroke-width=\"1.6\"/><circle cx=\"9\" cy=\"20\" r=\"2.8\" fill=\"#0F0F13\"/><polyline points=\"13,22 32,20\"/><polyline points=\"13,22 13,44\"/><polyline points=\"32,20 38,33 33,44\"/><circle cx=\"13\" cy=\"44\" r=\"2\" fill=\"#D9232E\" stroke=\"#D9232E\"/>","b":"<line x1=\"2\" y1=\"46.5\" x2=\"46\" y2=\"46.5\" stroke=\"#9CA3AF\" stroke-width=\"1.6\"/><circle cx=\"9\" cy=\"20\" r=\"2.8\" fill=\"#0F0F13\"/><polyline points=\"13,22 32,20\"/><polyline points=\"13,22 20,33 24,44\"/><polyline points=\"32,20 27,32 26,44\"/><circle cx=\"24\" cy=\"44\" r=\"2\" fill=\"#D9232E\" stroke=\"#D9232E\"/>"},"carry":{"a":"<line x1=\"2\" y1=\"46.5\" x2=\"46\" y2=\"46.5\" stroke=\"#9CA3AF\" stroke-width=\"1.6\"/><circle cx=\"23\" cy=\"7\" r=\"2.8\" fill=\"#0F0F13\"/><polyline points=\"23,10 23,26 23.5,36 23,45 27,45\"/><polyline points=\"23,13 30,18 24,22\"/><circle cx=\"28\" cy=\"19\" r=\"4.5\" fill=\"#D9232E\" stroke=\"#D9232E\"/>","b":"<line x1=\"4\" y1=\"45\" x2=\"44\" y2=\"33\" stroke=\"#9CA3AF\" stroke-width=\"1.6\"/><circle cx=\"27\" cy=\"6\" r=\"2.8\" fill=\"#0F0F13\"/><polyline points=\"27,9 24,25\"/><polyline points=\"24,25 30,31 33,36\"/><polyline points=\"24,25 21,33 18,40\"/><polyline points=\"27,12 33,17 27,21\"/><circle cx=\"31\" cy=\"18\" r=\"4.5\" fill=\"#D9232E\" stroke=\"#D9232E\"/>"},"boxjump":{"a":"<line x1=\"2\" y1=\"46.5\" x2=\"46\" y2=\"46.5\" stroke=\"#9CA3AF\" stroke-width=\"1.6\"/><line x1=\"29\" y1=\"36\" x2=\"46\" y2=\"36\" stroke=\"#9CA3AF\" stroke-width=\"2.4\"/><line x1=\"31\" y1=\"36\" x2=\"31\" y2=\"46\" stroke=\"#9CA3AF\" stroke-width=\"1.6\"/><line x1=\"44\" y1=\"36\" x2=\"44\" y2=\"46\" stroke=\"#9CA3AF\" stroke-width=\"1.6\"/><circle cx=\"13\" cy=\"19\" r=\"2.8\" fill=\"#0F0F13\"/><polyline points=\"15,22 20,33\"/><polyline points=\"20,33 26,38 22,45 26,45\"/><polyline points=\"16,24 10,29\"/><circle cx=\"10\" cy=\"29\" r=\"2\" fill=\"#D9232E\" stroke=\"#D9232E\"/>","b":"<line x1=\"2\" y1=\"46.5\" x2=\"46\" y2=\"46.5\" stroke=\"#9CA3AF\" stroke-width=\"1.6\"/><line x1=\"19\" y1=\"36\" x2=\"44\" y2=\"36\" stroke=\"#9CA3AF\" stroke-width=\"2.4\"/><line x1=\"21\" y1=\"36\" x2=\"21\" y2=\"46\" stroke=\"#9CA3AF\" stroke-width=\"1.6\"/><line x1=\"42\" y1=\"36\" x2=\"42\" y2=\"46\" stroke=\"#9CA3AF\" stroke-width=\"1.6\"/><circle cx=\"31\" cy=\"11\" r=\"2.8\" fill=\"#0F0F13\"/><polyline points=\"31,14 31,28\"/><polyline points=\"31,28 30,34 33,34\"/><polyline points=\"31,28 34,34\"/><polyline points=\"31,16 36,11\"/><circle cx=\"36\" cy=\"11\" r=\"2\" fill=\"#D9232E\" stroke=\"#D9232E\"/>"},"invrow":{"a":"<line x1=\"2\" y1=\"46.5\" x2=\"46\" y2=\"46.5\" stroke=\"#9CA3AF\" stroke-width=\"1.6\"/><line x1=\"6\" y1=\"16\" x2=\"6\" y2=\"46\" stroke=\"#9CA3AF\" stroke-width=\"2.4\"/><line x1=\"6\" y1=\"16\" x2=\"18\" y2=\"16\" stroke=\"#9CA3AF\" stroke-width=\"2.4\"/><circle cx=\"13\" cy=\"32.5\" r=\"2.6\" fill=\"#0F0F13\"/><polyline points=\"18,34 42,43\"/><polyline points=\"18,34 14,16\"/><circle cx=\"14\" cy=\"16\" r=\"2\" fill=\"#D9232E\" stroke=\"#D9232E\"/>","b":"<line x1=\"2\" y1=\"46.5\" x2=\"46\" y2=\"46.5\" stroke=\"#9CA3AF\" stroke-width=\"1.6\"/><line x1=\"6\" y1=\"16\" x2=\"6\" y2=\"46\" stroke=\"#9CA3AF\" stroke-width=\"2.4\"/><line x1=\"6\" y1=\"16\" x2=\"18\" y2=\"16\" stroke=\"#9CA3AF\" stroke-width=\"2.4\"/><circle cx=\"14\" cy=\"22\" r=\"2.6\" fill=\"#0F0F13\"/><polyline points=\"18,25 42,43\"/><polyline points=\"18,26 22,21 14,16\"/><circle cx=\"14\" cy=\"16\" r=\"2\" fill=\"#D9232E\" stroke=\"#D9232E\"/>"}};
+/* ---- Disegni aggiuntivi (riscaldamento, corsa, defaticamento) + frecce di movimento ----
+   Coordinate in un riquadro 48x48. Pose: a = partenza, b = arrivo. */
+const _H=(x,y,r=2.8)=>`<circle cx="${x}" cy="${y}" r="${r}" fill="#0F0F13"/>`;
+const _L=p=>`<polyline points="${p}"/>`;
+const _G=(x1,y1,x2,y2,w=1.6)=>`<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="#9CA3AF" stroke-width="${w}"/>`;
+const _R=(x,y,r=2.2)=>`<circle cx="${x}" cy="${y}" r="${r}" fill="#D9232E" stroke="#D9232E"/>`;
+const _RP=(d,w=1.9)=>`<path d="${d}" stroke="#D9232E" stroke-width="${w}"/>`;
+const _RL=(p,w=1.9)=>`<polyline points="${p}" stroke="#D9232E" stroke-width="${w}"/>`;
+const _GND=_G(2,46.5,46,46.5);
+
+const DRAW_NEW = {
+  walk:{
+    a:_GND+_H(23,6)+_L('23,9 23,25')+_L('23,25 28,35 30,45 34,45')+_L('23,25 17,35 12,43')+_L('23,11 27,18 30,16')+_L('23,11 19,19 17,24'),
+    b:_GND+_H(23,6)+_L('23,9 23,25')+_L('23,25 18,35 17,45 21,45')+_L('23,25 29,34 35,41')+_L('23,11 19,18 16,16')+_L('23,11 27,19 29,24')
+  },
+  run:{
+    a:_GND+_H(28,8)+_L('26,11 20,24')+_L('20,24 31,27 29,38 33,38')+_L('20,24 13,33 6,31')+_L('25,13 30,19 35,16')+_L('25,13 19,18 14,13'),
+    b:_GND+_H(28,8)+_L('26,11 20,24')+_L('20,24 25,35 22,44 26,44')+_L('20,24 12,27 7,36')+_L('25,13 20,19 22,25')+_L('25,13 31,17 34,12')
+  },
+  bike:{
+    a:_G(6,46.5,42,46.5)+'<circle cx="11" cy="38" r="7" stroke="#9CA3AF" stroke-width="1.6"/>'+_G(17,20,17,36,2.4)+_G(13,19,21,19,2.6)+_G(34,13,31,36,2.4)+_G(30,13,36,13,2.6)+_G(11,38,31,38)
+      +_H(28.5,5.5)+_L('18,18 26,9')+_L('26,10 32,14 33,13')+_L('18,18 27,25 28,38')+_R(28,38,1.8),
+    b:_G(6,46.5,42,46.5)+'<circle cx="11" cy="38" r="7" stroke="#9CA3AF" stroke-width="1.6"/>'+_G(17,20,17,36,2.4)+_G(13,19,21,19,2.6)+_G(34,13,31,36,2.4)+_G(30,13,36,13,2.6)+_G(11,38,31,38)
+      +_H(28.5,5.5)+_L('18,18 26,9')+_L('26,10 32,14 33,13')+_L('18,18 27,22 22,36')+_R(22,36,1.8)
+  },
+  lungeTwist:{
+    a:_GND+_H(23,7)+_L('23,10 23,25')+_L('23,25 22,36 22,45 26,45')+_L('23,12 20,19 23,24')+_RP('M15 26 Q23 32 31 26')+_RL('28.4,23.6 31,26 27.8,27.8'),
+    b:_GND+_H(22,10)+_L('22,13 22,29')+_L('22,29 31,33 31,43 35,43')+_L('22,29 16.5,38.5 8,44')+_L('22,16 35,16')+_L('22,16 9,16')+_RP('M12 6 Q22 0 32 6')+_RL('29,3.6 32,6 28.4,7.4')
+  },
+  bodySquat:{
+    a:_GND+_H(23,6)+_L('23,9 23,25')+_L('23,25 23.5,35 23,45 27,45')+_L('23,11 24,19 24,25'),
+    b:_GND+_H(21.5,11)+_L('20,14 14,32')+_L('14,32 30,32 26,45 30,45')+_L('20,17 34,17')
+  },
+  bridge:{
+    a:_G(2,42.5,46,42.5)+_H(4.5,38)+_L('8,39 22,39')+_L('22,39 31,28 35,41')+_L('9,40 20,41'),
+    b:_G(2,42.5,46,42.5)+_H(4.5,38)+_L('8,39 22,28')+_L('22,28 32,29 35,41')+_L('9,40 20,41')
+  },
+  rowing:{
+    a:_G(3,41,45,41,2)+_G(40,28,40,41,2.2)+_G(10,38,18,38,2.4)+_H(23,11.5)+_L('14,35 21,16')+_L('21,17 34,22')+_R(34,22,2)+_L('14,35 29,28 38,35 38,40'),
+    b:_G(3,41,45,41,2)+_G(40,28,40,41,2.2)+_G(10,38,18,38,2.4)+_H(8.5,13.5)+_L('14,35 10,18')+_L('10,19 7,27 17,26')+_R(17,26,2)+_L('14,35 38,36 39,40')
+  },
+  shoulderCircles:{
+    a:_GND+_H(24,7)+_L('24,10 24,31')+_L('15,16 33,16')+_L('24,31 20,45')+_L('24,31 28,45')+_L('15,16 13,30')+_L('33,16 35,30')
+      +_RP('M9.5 16 A5 5 0 1 1 15 10.6')+_RL('12.4,9 15,10.6 12.4,12.6')+_RP('M38.5 16 A5 5 0 1 0 33 10.6')+_RL('35.6,9 33,10.6 35.6,12.6'),
+    b:_GND+_H(24,7)+_L('24,10 24,31')+_L('15,16 33,16')+_L('24,31 20,45')+_L('24,31 28,45')+_L('15,16 8,9')+_L('33,16 40,9')
+      +_RP('M4 4 A5 5 0 0 1 11 3')+_RP('M44 4 A5 5 0 0 0 37 3')
+  },
+  kneePushup:{
+    a:_G(2,44.5,46,44.5)+_H(4.5,23)+_L('8,25 34,42')+_L('34,42 42,34')+_L('9,26 9,43')+_R(9,43,1.8),
+    b:_G(2,44.5,46,44.5)+_H(4,34)+_L('8,35 34,42')+_L('34,42 42,34')+_L('9,35 15,40 9,43')+_R(9,43,1.8)
+  },
+  skip:{
+    a:_GND+_H(23,6)+_L('23,9 23,25')+_L('23,25 22,35 22,45 26,45')+_L('23,25 32,26 31,36 35,36')+_L('23,11 29,17 31,12')+_L('23,11 18,18 16,23'),
+    b:_GND+_H(23,6)+_L('23,9 23,25')+_L('23,25 22,35 22,45 26,45')+_L('23,25 32,26 31,36 35,36')+_L('23,11 28,17 33,18')+_L('23,11 18,17 15,13')
+  },
+  fig4:{
+    a:_G(42,2,42,46)+_GND+_H(24,6)+_L('24,9 24,25')+_L('24,25 24,35 24,45 28,45')+_L('24,25 32,29 24,35')+_L('24,12 33,17 42,16'),
+    b:_G(42,2,42,46)+_GND+_H(22,10)+_L('22,13 19,29')+_L('19,29 27,38 24,45 28,45')+_L('19,29 30,31 26,38')+_L('22,16 33,18 42,17')
+  },
+  calfStretch:{
+    a:_G(42,2,42,46)+_GND+_H(28,7)+_L('28,10 28,26')+_L('28,26 28,36 28,45 32,45')+_L('28,12 35,16 42,15'),
+    b:_G(42,2,42,46)+_GND+_H(31,9)+_L('30,12 24,28')+_L('24,28 12,44 8,44')+_L('24,28 33,36 31,45 35,45')+_L('30,14 42,14')+_R(16,38,1.8)
+  },
+  chestStretch:{
+    a:_GND+_H(24,7)+_L('24,10 24,31')+_L('16,16 32,16')+_L('24,31 20,45')+_L('24,31 28,45')+_L('16,16 14,30')+_L('32,16 34,30'),
+    b:_GND+_H(24,7)+_L('24,10 24,31')+_L('16,16 32,16')+_L('24,31 20,45')+_L('24,31 28,45')+_L('16,16 4,16')+_L('32,16 44,16')
+  },
+  forearmStretch:{
+    a:_GND+_H(14,7)+_L('14,10 14,28')+_L('14,28 14,37 14,46')+_L('14,14 30,15')+_L('30,15 30,22')+_R(30,22,1.6),
+    b:_GND+_H(14,7)+_L('14,10 14,28')+_L('14,28 14,37 14,46')+_L('14,14 30,15')+_L('30,15 30,8')+_L('14,17 23,21 31,13')+_R(30,8,1.6)
+  }
+};
+
+/* Frecce rosse di movimento (sulla posa b). Array = [x1,y1,x2,y2], stringa = svg libero. */
+const ARROWS = {
+  squat:[[9,10,9,28]], stepup:[[9,36,9,14]], hyper:[[6,36,6,16]], legcurl:[[44,32,44,19]],
+  lunge:[[8,8,8,24]], calf:[[37,34,37,18]], romanchair:[[35,36,35,22]],
+  pullup:[[44,28,44,12]], cablerow:[[40,18,27,18]], bench:[[24,24,24,10]], curl:[[39,28,39,16]], revcurl:[[39,28,39,16]],
+  farmer:[[30,6,44,6]], deadhang:[],
+  hill:[[6,31,19,25]], burpee:[[26,30,26,12]], bearcrawl:[[22,10,40,10]], carry:[[5,36,15,33]], boxjump:[[10,42,18,30]], invrow:[[40,36,40,24]],
+  walk:[[28,3,44,3]], run:[[28,3,44,3]],
+  bike:[], lungeTwist:[], bodySquat:[[8,16,8,34]], bridge:[[22,24,22,11]], rowing:[[28,14,40,14]],
+  shoulderCircles:[], kneePushup:[[22,24,22,34]], skip:[[40,31,40,19]], fig4:[[8,30,8,40]],
+  calfStretch:[[18,22,18,30]], chestStretch:[], forearmStretch:[]
+};
+
+/* ---- Libreria disegni: unisce i disegni, crea frecce e SVG ---- */
+const DRAW = Object.assign({}, DRAW_PDF, DRAW_NEW);
+const KEY_POSE = { deadhang:'a' };  // posa mostrata nel riquadro piccolo (default: b)
+function arrowSvg(x1,y1,x2,y2){
+  const a=Math.atan2(y2-y1,x2-x1), h=3.6, f=n=>n.toFixed(1);
+  const p1=[x2-h*Math.cos(a-0.55),y2-h*Math.sin(a-0.55)], p2=[x2-h*Math.cos(a+0.55),y2-h*Math.sin(a+0.55)];
+  return '<g stroke="#D9232E" stroke-width="2" fill="none"><line x1="'+x1+'" y1="'+y1+'" x2="'+x2+'" y2="'+y2+'"/>'
+    +'<polyline points="'+f(p1[0])+','+f(p1[1])+' '+x2+','+y2+' '+f(p2[0])+','+f(p2[1])+'"/></g>';
+}
+function arrowsFor(id){
+  const a=ARROWS[id]||[];
+  return a.map(v=>typeof v==='string'?v:arrowSvg(v[0],v[1],v[2],v[3])).join('');
+}
+function poseSvg(id,pose,withArrow,px,cls){
+  const d=DRAW[id]; if(!d) return '';
+  return '<svg class="'+(cls||'')+'" width="'+px+'" height="'+px+'" viewBox="0 0 48 48" fill="none" stroke="#F3F4F6" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">'
+    +d[pose]+(withArrow?arrowsFor(id):'')+'</svg>';
+}
+
+/* =====================================================================
+   CALENDARIO  —  Lunedì 23 nov 2026 = giorno 1 · Domenica 27 giu 2027 = giorno 217
+   ===================================================================== */
+const MESI = ['gennaio','febbraio','marzo','aprile','maggio','giugno','luglio','agosto','settembre','ottobre','novembre','dicembre'];
+const MESI3 = ['GEN','FEB','MAR','APR','MAG','GIU','LUG','AGO','SET','OTT','NOV','DIC'];
+const LETTERE = ['L','M','M','G','V','S','D'];
+const dn = (y, m, d) => Math.floor(Date.UTC(y, m, d) / 86400000);
+const fromN = n => { const d = new Date(n * 86400000); return { y: d.getUTCFullYear(), m: d.getUTCMonth(), d: d.getUTCDate() }; };
+const START_N = dn(2026, 10, 23);
+const RACE_N = dn(2027, 5, 26);
+const END_N = START_N + 216;
+function todayN() { const t = new Date(); return dn(t.getFullYear(), t.getMonth(), t.getDate()); }
+const clampN = n => Math.min(END_N, Math.max(START_N, n));
+function locate(n) { const i = clampN(n) - START_N; return { week: Math.floor(i / 7) + 1, dow: i % 7 }; }
+const dayN = (week, dow) => START_N + (week - 1) * 7 + dow;
+const plural = (n, s, p) => n + ' ' + (n === 1 ? s : p);
+
+/* ---- stato (solo in memoria: nessun salvataggio) ---- */
+const state = { tab: 'train', sel: START_N, today: todayN(), sheet: 'legenda' };
+state.sel = clampN(state.today);
+
+/* =====================================================================
+   DISEGNI
+   ===================================================================== */
+const POSE_LABELS = {
+  deadhang: ['Presa', 'Tenuta'], walk: ['Passo 1', 'Passo 2'], run: ['Passo 1', 'Passo 2'], skip: ['Passo 1', 'Passo 2'],
+  bike: ['Pedale avanti', 'Pedale giù'], fig4: ['Posizione', 'Tenuta'], calfStretch: ['Posizione', 'Tenuta'],
+  chestStretch: ['Posizione', 'Tenuta'], forearmStretch: ['Posizione', 'Tenuta'], shoulderCircles: ['Cerchi', 'Rotazione'],
+  lungeTwist: ['Cerchi anche', 'Affondo + rotazione']
+};
+function tile(id, name, cls) {
+  const key = KEY_POSE[id] || 'b';
+  return '<button type="button" class="tile ' + (cls || '') + '" data-zoom="' + id + '" data-name="' + name.replace(/"/g, '&quot;') + '" aria-label="Ingrandisci il disegno: ' + name.replace(/"/g, '&quot;') + '">'
+    + poseSvg(id, key, true, cls === 'sm' ? 48 : 64) + '</button>';
+}
+function openZoom(id, name, trigger) {
+  const L = POSE_LABELS[id] || ['Partenza', 'Arrivo'];
+  const z = document.getElementById('zoom');
+  z.querySelector('.zoom-title').textContent = name;
+  z.querySelector('.zoom-poses').innerHTML =
+    '<figure>' + poseSvg(id, 'a', false, 136) + '<figcaption>' + L[0].toUpperCase() + '</figcaption></figure>'
+    + '<span class="zoom-next" aria-hidden="true">›</span>'
+    + '<figure>' + poseSvg(id, 'b', true, 136) + '<figcaption>' + L[1].toUpperCase() + '</figcaption></figure>';
+  z.hidden = false; z._from = trigger || null;
+  document.body.classList.add('lock');
+  z.querySelector('.zoom-close').focus();
+}
+function closeZoom() {
+  const z = document.getElementById('zoom'); if (z.hidden) return;
+  z.hidden = true; document.body.classList.toggle('lock', !document.getElementById('sheet').hidden);
+  if (z._from && document.body.contains(z._from)) z._from.focus();
+}
+
+/* =====================================================================
+   COMPONENTI
+   ===================================================================== */
+function loadHtml(k, was) {
+  const L = LEVEL[k];
+  let h = '<div class="load">';
+  if (L.bars === 0) h += '<span class="badge free">CORPO LIBERO</span>';
+  else {
+    h += '<span class="bars" role="img" aria-label="Carico ' + k.toLowerCase() + ', ' + L.bars + ' barre su 5">';
+    for (let i = 0; i < 5; i++) h += '<i class="' + (i < L.bars ? 'on' : '') + (k === 'RISCALDAMENTO' ? ' warm' : '') + '"></i>';
+    h += '</span><span class="badge">' + k + '</span>';
+  }
+  if (was) h += '<span class="was">era ' + was + '</span>';
+  return h + '</div>';
+}
+function exCard(it, day) {
+  const sets = '<b class="sr">' + it.sets + ' × ' + it.reps + '</b>'
+    + (it.setsWas ? '<span class="was">era ' + it.setsWas + (it.hill ? '' : ' serie') + '</span>' : '')
+    + (it.was ? '<span class="was">era ' + it.was + (it.hill && it.was.indexOf('′') < 0 ? ' serie' : '') + '</span>' : '');
+  const per = it.per ? '<span class="per">' + it.per + '</span>' : '';
+  const rest = it.rest ? '<span class="rest">' + it.rest + '</span>' : '';
+  const rir = day.rirOn && !it.pre ? '<span class="chip rir">' + day.rir + '</span>' : '';
+  return '<article class="ex' + (it.pre ? ' pre' : '') + '">' + tile(it.draw, it.name)
+    + '<div class="ex-b"><div class="ex-t">' + (it.n ? '<span class="num">' + it.n + '</span>' : '<span class="num warm">↗</span>') + '<h3>' + it.name + '</h3></div>'
+    + '<div class="ex-sr">' + sets + per + rest + rir + '</div>'
+    + loadHtml(it.load, it.loadWas)
+    + (it.note ? '<p class="note">' + it.note + '</p>' : '') + '</div></article>';
+}
+function rowCard(it) {
+  return '<div class="row">' + tile(it.draw, it.name, 'sm') + '<div class="row-b"><div class="row-n">' + it.name + '</div>'
+    + (it.note ? '<div class="row-note">' + it.note + '</div>' : '') + '</div><div class="row-amt">' + it.amount + '</div></div>';
+}
+function secHead(title, meta) { return '<div class="sec-h"><h2>' + title + '</h2>' + (meta ? '<span>' + meta + '</span>' : '') + '</div>'; }
+function warmCool(title, S) { return '<section class="sec">' + secHead(title, S.min) + '<div class="card list">' + S.items.map(rowCard).join('') + '</div></section>'; }
+function paceBars(p) {
+  const n = PACES[p].bars; let h = '<span class="bars pace" role="img" aria-label="Ritmo ' + p.toLowerCase() + '">';
+  for (let i = 0; i < 4; i++) h += '<i class="' + (i < n ? 'on' : '') + '"></i>';
+  return h + '</span>';
+}
+
+/* ---- Banner (scarico / gara) ---- */
+function bannerHtml(day) {
+  if (!day.banner) return '';
+  const b = day.banner, cls = b.type === 'scarico' ? 'amber' : 'red';
+  return '<div class="banner ' + cls + '" role="status"><b>' + b.title + '</b><span>' + b.text + '</span></div>';
+}
+function noteCard(day) {
+  return day.raceNote ? '<div class="card pad racenote"><div class="mini">NOTA DEL GIORNO · SETT. 31</div><p>' + day.raceNote + '</p></div>' : '';
+}
+
+/* ---- Giorno di allenamento ---- */
+function heroHtml(day, chips) {
+  return '<section class="hero"><div class="eyebrow">' + day.label + '</div><h1>' + day.title + '</h1>'
+    + (day.sub ? '<p class="sub">' + day.sub + '</p>' : '')
+    + '<div class="chips">' + chips.map(c => '<span class="chip">' + c + '</span>').join('') + '</div></section>';
+}
+function renderWorkout(day) {
+  const chips = [day.minutes + ' min', day.count + ' ' + day.countLabel];
+  if (day.rirOn) chips.push(day.rir);
+  else if (day.kind === 'corsa') chips.push('Fase ' + day.phase.n + ' · ' + day.phase.name);
+  let h = bannerHtml(day) + heroHtml(day, chips) + noteCard(day);
+  h += warmCool('RISCALDAMENTO', day.warm);
+  if (day.kind === 'corsa') {
+    const r = day.run;
+    h += '<section class="sec">' + secHead('PARTE PRINCIPALE', '16-35 min, secondo la settimana')
+      + '<article class="card run">' + tile('run', 'Corsa: ' + r.text) + '<div class="ex-b">'
+      + '<div class="mini">FASE ' + day.phase.n + ' · ' + day.phase.name + ' · SETT. ' + day.week + '</div>'
+      + '<p class="run-text">' + r.text + '</p>'
+      + '<div class="run-meta"><span class="tot"><b>' + r.total + '</b> totale</span>' + paceBars(r.pace) + '<span class="badge">' + r.pace + '</span></div>'
+      + (r.was ? '<p class="was block">Scarico · normalmente: ' + r.was.text + ' (' + r.was.total + ', ' + r.was.pace.toLowerCase() + ')</p>' : '')
+      + '</div></article></section>';
+    h += '<section class="sec">' + secHead('COME SI SENTE IL RITMO') + '<div class="card pad paces">'
+      + Object.keys(PACES).map(k => '<div class="pace-row' + (k === r.pace ? ' cur' : '') + '">' + paceBars(k) + '<b>' + k + '</b><span>' + PACES[k].feel + '</span></div>').join('')
+      + '</div></section>';
+  } else {
+    h += '<section class="sec">' + secHead('PARTE PRINCIPALE', day.main.min)
+      + day.main.items.map(it => exCard(it, day)).join('') + '</section>';
+  }
+  h += warmCool('DEFATICAMENTO', day.cool);
+  h += '<p class="foot">' + day.foot + '</p>';
+  return h;
+}
+
+/* ---- Riposo ---- */
+function renderRest(day) {
+  let h = bannerHtml(day) + heroHtml(day, ['Recupero attivo', 'Mobilità', 'Idratazione'])
+    .replace('<p class="sub"></p>', '');
+  if (day.raceNote) h += noteCard(day);
+  h += '<section class="sec">' + secHead('RECUPERO ATTIVO', 'camminata facoltativa') + '<div class="card pad"><div class="rest-top">' + tile('walk', 'Camminata facile') + '<ul class="bul">'
+    + REST_DATA.recupero.map(t => '<li>' + t + '</li>').join('') + '</ul></div></div></section>';
+  h += '<section class="sec">' + secHead('MOBILITÀ', '5-10 min') + '<div class="card list">'
+    + REST_DATA.mobilita.map(it => rowCard(Object.assign({ note: '' }, it))).join('') + '</div></section>';
+  h += '<section class="sec">' + secHead('IDRATAZIONE') + '<div class="card pad"><ul class="bul">'
+    + REST_DATA.idratazione.map(t => '<li>' + t + '</li>').join('') + '</ul></div></section>';
+  h += '<div class="card pad nextup"><div class="mini">PROSSIMO ALLENAMENTO</div><p><b>' + day.nextDay + '</b> · ' + day.next + '</p><p class="dim">' + REST_DATA.dieta + '</p></div>';
+  return h;
+}
+
+/* ---- Gara ---- */
+function raceTable(withIntro) {
+  return RACE.ostacoli.map(o => '<div class="obst"><b>' + o.n + '</b><span class="dim">' + o.serve + '</span><span>'
+    + o.dove.map(d => '<em>' + d[0] + ':</em> ' + d[1]).join(' · ') + '</span></div>').join('');
+}
+function raceStats() {
+  return '<div class="stats">' + RACE.stats.map(s => '<div><b>' + s.v + '</b><span>' + s.l + '</span></div>').join('') + '</div>';
+}
+function renderRace(day) {
+  const sat = day.dow === 5;
+  let h = bannerHtml(day) + '<section class="hero race"><div class="eyebrow">' + day.label + '</div><h1>Gara</h1><p class="sub">'
+    + RACE.tipo + ' · ' + RACE.dove + ' · ' + RACE.quando + '</p>' + raceStats() + '</section>';
+  h += '<div class="card pad warn"><b>Conferma il giorno e l\'orario.</b> Per il piano la gara è sabato 26 giugno, ma sul sito ufficiale lo Sprint è indicato il 27 giugno: ' + (sat ? 'controlla prima di partire.' : 'oggi potrebbe essere il tuo giorno di gara.') + '</div>';
+  h += '<section class="sec">' + secHead('IL GIORNO DELLA GARA') + '<div class="card pad"><ul class="bul tips">'
+    + RACE.giorno.map(g => '<li><b>' + g[0] + '</b> ' + g[1] + '</li>').join('') + '</ul></div></section>';
+  h += '<section class="sec">' + secHead('GLI OSTACOLI E DOVE LI ALLENI') + '<div class="card pad obsts">' + raceTable() + '</div></section>';
+  h += '<button type="button" class="btn wide" data-act="sheet" data-sheet="gara">Tutti i dettagli gara</button>';
+  return h;
+}
+
+/* =====================================================================
+   DIETA
+   ===================================================================== */
+function modById(id) {
+  for (const k of Object.keys(DIET_DATA.moduli)) { const m = DIET_DATA.moduli[k].find(x => x.id === id); if (m) return m; }
+  return null;
+}
+function modRow(m, t) {
+  const o = 1 - t;
+  return '<div class="mod"><div class="mod-id">' + m.id + '</div><div class="mod-b"><h4>' + m.nome + '</h4><p>' + m.cosa + '</p>'
+    + (m.nota ? '<p class="dim">' + m.nota + '</p>' : '') + '</div><div class="mod-k"><b>' + m.kcal[t] + '</b><span>kcal · ' + m.prot[t] + ' g</span>'
+    + '<small>' + (t ? 'allen.' : 'riposo') + ' ' + m.kcal[o] + '</small></div></div>';
+}
+function acc(title, meta, body, open) {
+  return '<details class="acc"' + (open ? ' open' : '') + '><summary><span>' + title + '</span>' + (meta ? '<em>' + meta + '</em>' : '') + '</summary><div class="acc-b">' + body + '</div></details>';
+}
+function bulList(a) { return '<ul class="bul">' + a.map(x => '<li>' + x + '</li>').join('') + '</ul>'; }
+function renderDiet(day) {
+  const D = DIET_DATA;
+  const isTrain = [0, 1, 3, 5].indexOf(day.dow) >= 0;
+  const t = isTrain ? 0 : 1, G = D.giorni[isTrain ? 'allenamento' : 'riposo'];
+  const w = D.settimana[day.dow];
+  let h = '<section class="hero diet"><div class="eyebrow">' + day.dayName.toUpperCase() + ' · DIETA</div><h1>' + G.titolo + '</h1>'
+    + '<div class="bigk"><b>' + G.kcal.replace('≈ ', '').replace(' kcal', '') + '</b><span>kcal</span></div>'
+    + '<div class="macros"><div><span>PROTEINE</span><b>' + G.proteine + '</b></div><div><span>CARBOIDRATI</span><b>' + G.carboidrati + '</b></div>'
+    + '<div><span>GRASSI</span><b>' + G.grassi + '</b></div><div><span>ACQUA</span><b>' + G.acqua + '</b></div></div>'
+    + '<p class="sub">' + G.note + '</p></section>';
+  if (day.kind === 'gara') {
+    h += '<div class="card pad warn"><b>Giorno di gara.</b> ' + RACE.giorno[0][0] + ': ' + RACE.giorno[0][1] + ' ' + RACE.giorno[4][0] + ': ' + RACE.giorno[4][1] + '</div>';
+  }
+  /* pasti di oggi */
+  h += '<section class="sec">' + secHead('I 4 PASTI', 'oggi: ' + (isTrain ? 'porzioni di allenamento' : 'porzioni di riposo')) + '<div class="meals">'
+    + D.pasti.map(p => '<div class="card meal"><span class="mini">' + p.nome.toUpperCase() + '</span><b>' + p.kcal[t] + ' <small>kcal</small></b><span class="dim">' + p.moduli + ' · ' + p.nota + '</span></div>').join('')
+    + '</div><p class="foot tight">' + D.regolaPasti + '</p></section>';
+  /* esempio del giorno dalla settimana tipo */
+  h += '<section class="sec">' + secHead('ESEMPIO DI OGGI', 'dalla settimana tipo') + '<div class="card list">'
+    + ['c', 'p', 'm', 'd'].map(k => modRow(modById(w[k]), t)).join('') + '</div></section>';
+  /* timing */
+  h += '<section class="sec">' + secHead(D.timing.titolo.toUpperCase(), D.timing.sotto) + '<div class="timing">'
+    + D.timing.varianti.map(v => {
+      const cur = v.id === 'riposo' ? !isTrain : isTrain;
+      return '<div class="card pad tv' + (cur ? '' : ' off') + '"><div class="mini">' + v.titolo.toUpperCase() + '</div>' + bulList(v.righe) + '</div>';
+    }).join('') + '</div>';
+  if (isTrain) {
+    h += '<div class="pr">' + [D.timing.pre, D.timing.rinforzo].map(x => '<div class="card pad"><div class="mini">' + x.titolo + '</div><b class="kk">' + x.kcal + '</b><p>' + x.cosa + '</p></div>').join('') + '</div>';
+  }
+  h += '<p class="foot tight">Ti alleni la mattina presto o la sera? Segui la scheda che fa per quel giorno: l\'altra resta indicativa.</p></section>';
+  /* idratazione */
+  h += '<section class="sec">' + secHead('IDRATAZIONE') + '<div class="card pad"><p><b>Allenamento</b> · ' + D.idratazione.allenamento + '</p><p><b>Riposo</b> · ' + D.idratazione.riposo + '</p>'
+    + bulList(D.idratazione.note) + '</div></section>';
+  /* moduli e approfondimenti */
+  h += '<section class="sec">' + secHead('TUTTI I MODULI', 'tocca per aprire') + '<div class="accs">'
+    + acc('Colazione', 'C1-C4', '<div class="list">' + D.moduli.colazione.map(m => modRow(m, t)).join('') + '</div>')
+    + acc('Pranzo da portare', 'P1-P6', '<div class="list">' + D.moduli.pranzo.map(m => modRow(m, t)).join('') + '</div>')
+    + acc('Merenda dopo l\'allenamento', 'M1-M5', '<div class="list">' + D.moduli.merenda.map(m => modRow(m, t)).join('') + '</div>' + bulList(D.noteModuli.colazioneMerenda))
+    + acc('Cena', 'D1-D5', '<div class="list">' + D.moduli.cena.map(m => modRow(m, t)).join('') + '</div>' + bulList(D.noteModuli.pranzoCena) + '<p class="foot tight">' + D.noteModuli.stime + '</p>')
+    + acc('Il pranzo da portare', D.mealPrep.sotto, bulList(D.mealPrep.punti) + '<p class="foot tight">' + D.mealPrep.sessioni + '</p>')
+    + acc('Settimana tipo', 'T = allenamento · R = riposo', settimanaHtml(day.dow))
+    + acc('Lista della spesa', 'per 7 giorni', D.spesa.map(s => '<p><b>' + s.t + '</b> · ' + s.v + '</p>').join(''))
+    + acc('Integratori', D.integratori.sotto, D.integratori.schede.map(s => '<div class="card pad int"><div class="int-h"><b>' + s.nome + '</b><span class="mini">' + s.tag + '</span></div>' + bulList(s.righe) + '</div>').join('') + '<p>' + D.integratori.nonServono + '</p>')
+    + acc('I tuoi numeri e come sono calcolati', D.profilo.eta + ' anni · ' + D.profilo.altezza + ' · ' + D.profilo.peso,
+      '<p>' + D.comeCalcolati + '</p><p><b>Controllo:</b> ' + D.controllo + '</p>' + bulList(D.noteNumeri))
+    + '</div></section><p class="foot">' + D.avvertenza + '</p>';
+  return h;
+}
+function settimanaHtml(curDow) {
+  return '<div class="week">' + DIET_DATA.settimana.map((r, i) => {
+    const mm = ['c', 'p', 'm', 'd'].map(k => { const m = modById(r[k]); return '<span><i>' + r[k] + '</i>' + m.nome + '</span>'; }).join('');
+    return '<div class="wk' + (i === curDow ? ' cur' : '') + (r.tr === 'R' ? ' rest' : '') + '"><div class="wk-h"><b>' + r.g + '</b><span>' + r.att + '</span><em>' + r.tr + '</em></div><div class="wk-m">' + mm + '</div></div>';
+  }).join('') + '</div>';
+}
+
+/* =====================================================================
+   INFO & LEGENDA (modale)
+   ===================================================================== */
+function legendaHtml() {
+  let h = '<section class="sec">' + secHead('LIVELLI DI CARICO') + '<div class="card pad">'
+    + '<p class="dim">' + NOTE_PIANO.carichi + '</p><div class="lv">'
+    + LEVELS.map(L => '<div class="lv-r">' + (L.bars ? '<span class="bars">' + [0, 1, 2, 3, 4].map(i => '<i class="' + (i < L.bars ? 'on' : '') + (L.k === 'RISCALDAMENTO' ? ' warm' : '') + '"></i>').join('') + '</span>' : '<span class="bars none">—</span>')
+      + '<div><b>' + L.k + '</b><span>' + L.reps + ' rip · ' + L.pct + '</span><small>' + L.feel + '</small></div></div>').join('')
+    + '</div><p class="dim">' + NOTE_PIANO.percentuali + '</p></div></section>';
+  h += '<section class="sec">' + secHead('PROGRESSIONE') + '<div class="card pad"><p>' + NOTE_PIANO.progressione + '</p><ul class="bul">'
+    + PROGRESSIONE.map(p => '<li><b>' + p[0] + '</b> · ' + p[1] + '</li>').join('') + '</ul></div></section>';
+  h += '<section class="sec">' + secHead('FASI E RIR') + '<div class="card pad">' + PHASES.map(p => '<div class="ph"><b>FASE ' + p.n + ' · ' + p.name + '</b><span>SETT. ' + p.w[0] + '-' + p.w[1] + ' · ' + p.range.toUpperCase() + ' · ' + p.rir.toUpperCase() + '</span><small>' + p.desc + '</small></div>').join('') + '</div></section>';
+  h += '<section class="sec">' + secHead('SETTIMANE DI SCARICO') + '<div class="card pad"><p>' + NOTE_PIANO.scarico + '</p><p class="dim">Settimane 4, 8, 12, 16, 20, 24, 28. Es.: ALTO → MEDIO-ALTO → MEDIO → LEGGERO → RISCALDAMENTO. Con CORPO LIBERO il carico non cambia.</p></div></section>';
+  h += '<section class="sec">' + secHead('LA SETTIMANA') + '<div class="card pad"><ul class="bul"><li><b>Lun</b> · Giorno 1 · Lower body · ~72 min</li><li><b>Mar</b> · Giorno 2 · Corsa · ~40 min</li><li><b>Mer</b> · Riposo o camminata</li><li><b>Gio</b> · Giorno 3 · Upper body · ~60 min</li><li><b>Ven</b> · Riposo o camminata</li><li><b>Sab</b> · Giorno 4 · Ostacoli · ~67 min</li><li><b>Dom</b> · Riposo o camminata</li></ul></div></section>';
+  h += '<p class="foot">' + NOTE_PIANO.attrezzi + ' ' + NOTE_PIANO.salute + '</p>';
+  return h;
+}
+function garaHtml() {
+  let h = '<section class="hero race"><div class="eyebrow">' + RACE.quando.toUpperCase() + ' · ' + RACE.dove.toUpperCase() + '</div><h1>La gara</h1><p class="sub">' + RACE.tipo + ' · come arrivarci e cosa ti aspetta</p>' + raceStats()
+    + '<p class="sub">Nel piano la gara è sabato 26 giugno. Sul sito ufficiale lo Sprint è indicato il 27 giugno: conferma il giorno e l\'orario di partenza.</p></section>';
+  h += '<section class="sec">' + secHead('GLI OSTACOLI E DOVE LI ALLENI') + '<div class="card pad obsts">' + raceTable() + '</div></section>';
+  h += '<section class="sec">' + secHead('LA SETTIMANA DELLA GARA', 'SETT. 31') + '<div class="card pad">'
+    + RACE.settimana.map(r => '<div class="rw"><b>' + r.g + '</b><span><strong>' + r.t + '</strong> ' + r.d + '</span></div>').join('') + '</div></section>';
+  h += '<section class="sec">' + secHead('IL GIORNO DELLA GARA') + '<div class="card pad"><ul class="bul tips">' + RACE.giorno.map(g => '<li><b>' + g[0] + '</b> ' + g[1] + '</li>').join('') + '</ul></div></section>';
+  h += '<section class="sec">' + secHead('SE MANCA UN ATTREZZO') + '<div class="card pad"><ul class="bul tips">' + RACE.attrezzi.map(g => '<li><b>' + g[0] + '</b> → ' + g[1] + '</li>').join('') + '</ul></div></section>';
+  h += '<p class="foot">' + RACE.fonti + ' ' + NOTE_PIANO.salute + '</p>';
+  return h;
+}
+function openSheet(which, trigger) {
+  const s = document.getElementById('sheet'); state.sheet = which;
+  s._from = trigger || null; s.hidden = false; document.body.classList.add('lock');
+  renderSheet(); s.querySelector('.sheet-body').scrollTop = 0; s.querySelector('.sheet-close').focus();
+}
+function closeSheet() {
+  const s = document.getElementById('sheet'); if (s.hidden) return;
+  s.hidden = true; document.body.classList.remove('lock');
+  if (s._from && document.body.contains(s._from)) s._from.focus();
+}
+function renderSheet() {
+  const s = document.getElementById('sheet');
+  s.querySelectorAll('[data-sheet-tab]').forEach(b => {
+    const on = b.dataset.sheetTab === state.sheet; b.setAttribute('aria-selected', on); b.classList.toggle('on', on);
+  });
+  s.querySelector('.sheet-content').innerHTML = state.sheet === 'legenda' ? legendaHtml() : garaHtml();
+}
+
+/* =====================================================================
+   HEADER + RENDER PRINCIPALE
+   ===================================================================== */
+function renderHeader() {
+  const { week, dow } = locate(state.sel), ph = phaseOf(week), d = fromN(state.sel);
+  const t = state.today, diff = RACE_N - t;
+  let cd;
+  if (diff > 1) cd = '−' + diff + ' GIORNI ALLA GARA'; else if (diff === 1) cd = '−1 GIORNO ALLA GARA'; else if (diff === 0) cd = 'OGGI LA GARA!'; else if (diff === -1) cd = 'DATA UFFICIALE: OGGI'; else cd = 'GARA CONCLUSA';
+  let tag = state.sel === t ? 'OGGI' : 'CONSULTAZIONE';
+  if (t < START_N && state.sel === START_N) tag = 'ANTEPRIMA';
+  if (t > END_N && state.sel === END_N) tag = 'PIANO CONCLUSO';
+  document.getElementById('h-date').innerHTML = '<span class="dow">' + DOW_NAMES[dow] + '</span> ' + d.d + ' ' + MESI[d.m] + ' ' + d.y + ' <em class="tag' + (tag === 'OGGI' ? ' now' : '') + '">' + tag + '</em>';
+  let pills = '<span class="pill red">' + cd + '</span>';
+  if (t < START_N) pills += '<span class="pill amber">INIZIO TRA ' + plural(START_N - t, 'GIORNO', 'GIORNI') + '</span>';
+  pills += '<span class="pill">SETTIMANA ' + week + '/31</span><span class="pill">FASE ' + ph.n + ' • ' + ph.rirShort + '</span>';
+  if (DELOAD_WEEKS.indexOf(week) >= 0) pills += '<span class="pill amber">SCARICO</span>';
+  document.getElementById('h-pills').innerHTML = pills;
+  const sel = document.getElementById('h-week');
+  if (!sel.options.length) {
+    let o = ''; for (let w = 1; w <= 31; w++) o += '<option value="' + w + '">Sett. ' + w + (DELOAD_WEEKS.indexOf(w) >= 0 ? ' · scarico' : (w === 31 ? ' · gara' : '')) + '</option>';
+    sel.innerHTML = o;
+  }
+  sel.value = String(week);
+  document.getElementById('h-prev').disabled = state.sel <= START_N;
+  document.getElementById('h-next').disabled = state.sel >= END_N;
+  let strip = '';
+  for (let i = 0; i < 7; i++) {
+    const n = dayN(week, i), dd = fromN(n);
+    strip += '<button type="button" class="wd' + (n === state.sel ? ' on' : '') + (n === t ? ' today' : '') + '" data-act="day" data-n="' + n + '" aria-label="' + DOW_NAMES[i] + ' ' + dd.d + ' ' + MESI[dd.m] + '"' + (n === state.sel ? ' aria-current="date"' : '') + '><span>' + LETTERE[i] + '</span><b>' + dd.d + '</b></button>';
+  }
+  document.getElementById('h-strip').innerHTML = strip;
+}
+function render() {
+  const { week, dow } = locate(state.sel), day = buildDay(week, dow);
+  renderHeader();
+  document.querySelectorAll('[data-tab]').forEach(b => { const on = b.dataset.tab === state.tab; b.setAttribute('aria-selected', on); b.classList.toggle('on', on); });
+  const main = document.getElementById('content');
+  let h;
+  if (state.tab === 'diet') h = renderDiet(day);
+  else if (day.kind === 'rest') h = renderRest(day);
+  else if (day.kind === 'gara') h = renderRace(day);
+  else h = renderWorkout(day);
+  main.innerHTML = h;
+  main.setAttribute('aria-labelledby', 'tab-' + state.tab);
+}
+function go(n, keepScroll) { state.sel = clampN(n); render(); if (!keepScroll) window.scrollTo(0, Math.min(window.scrollY, document.getElementById('tabs').offsetTop)); }
+
+/* =====================================================================
+   EVENTI
+   ===================================================================== */
+document.addEventListener('click', e => {
+  const z = e.target.closest('[data-zoom]');
+  if (z) { openZoom(z.dataset.zoom, z.dataset.name, z); return; }
+  const a = e.target.closest('[data-act]');
+  if (a) {
+    const act = a.dataset.act;
+    if (act === 'prev') go(state.sel - 1);
+    else if (act === 'next') go(state.sel + 1);
+    else if (act === 'today') go(state.today);
+    else if (act === 'day') go(+a.dataset.n);
+    else if (act === 'sheet') openSheet(a.dataset.sheet || 'legenda', a);
+    return;
+  }
+  const t = e.target.closest('[data-tab]');
+  if (t) { state.tab = t.dataset.tab; render(); return; }
+  const st = e.target.closest('[data-sheet-tab]');
+  if (st) { state.sheet = st.dataset.sheetTab; renderSheet(); return; }
+  if (e.target.closest('.sheet-close')) { closeSheet(); return; }
+  if (e.target.id === 'sheet') { closeSheet(); return; }
+  if (e.target.closest('.zoom-close') || e.target.id === 'zoom' || e.target.closest('.zoom-box')) { closeZoom(); return; }
+});
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') { if (!document.getElementById('zoom').hidden) closeZoom(); else closeSheet(); }
+});
+document.getElementById('h-week').addEventListener('change', e => {
+  const dow = locate(state.sel).dow; go(dayN(+e.target.value, dow));
+});
+
+render();
+
+</script>
+</body>
+</html>
